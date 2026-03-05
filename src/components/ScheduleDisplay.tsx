@@ -41,18 +41,9 @@ export function ScheduleDisplay({ scheduleGroups, onCopy, orgName, teamName }: S
   function formatScheduleGroup(group: ScheduleGroup): string {
     let text = `${formatDateSafe(group.date, formatDate)}\n`
 
-    group.assignments.forEach((assignment, index) => {
-      const isFirstPerson = index === 0
-      const showBookName = isFirstPerson ||
-        assignment.bookName !== group.assignments[index - 1].bookName
-
+    group.assignments.forEach((assignment) => {
       const name = (assignment.memberName ?? '').padEnd(6, ' ')
-
-      if (showBookName) {
-        text += `${name} ${assignment.bookName ?? ''} ${assignment.chapter ?? 0}${chapterLabel}\n`
-      } else {
-        text += `${name} ${assignment.chapter ?? 0}${chapterLabel}\n`
-      }
+      text += `${name} ${assignment.bookName ?? ''} ${assignment.chapter ?? 0}${chapterLabel}\n`
     })
 
     return text
@@ -96,23 +87,15 @@ export function ScheduleDisplay({ scheduleGroups, onCopy, orgName, teamName }: S
             </div>
 
             <div className="schedule-assignments">
-              {group.assignments.map((assignment, assignmentIndex) => {
-                const isFirstPerson = assignmentIndex === 0
-                const showBookName = isFirstPerson ||
-                  assignment.bookName !== group.assignments[assignmentIndex - 1].bookName
-
-                return (
-                  <div key={assignmentIndex} className="assignment-item">
-                    <span className="assignment-name">{assignment.memberName ?? ''}</span>
-                    <span className="assignment-reading">
-                      {showBookName && (
-                        <span className="book-name">{assignment.bookName ?? ''} </span>
-                      )}
-                      <span className="chapter">{assignment.chapter ?? 0}{chapterLabel}</span>
-                    </span>
-                  </div>
-                )
-              })}
+              {group.assignments.map((assignment, assignmentIndex) => (
+                <div key={assignmentIndex} className="assignment-item">
+                  <span className="assignment-name">{assignment.memberName ?? ''}</span>
+                  <span className="assignment-reading">
+                    <span className="book-name">{assignment.bookName ?? ''} </span>
+                    <span className="chapter">{assignment.chapter ?? 0}{chapterLabel}</span>
+                  </span>
+                </div>
+              ))}
             </div>
           </div>
         ))}
