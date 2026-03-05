@@ -1,0 +1,13 @@
+# Railway deployment config
+# Deploy: connect GitHub repo and use this Dockerfile (no build command needed)
+
+[build]
+builder = "dockerfile"
+dockerfilePath = "Dockerfile"
+
+[deploy]
+startCommand = "node server/index.js"
+healthcheckPath = "/api/health"
+healthcheckTimeout = 30
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 3

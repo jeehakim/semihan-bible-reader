@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=5, user-scalable=yes" />
+    <meta name="theme-color" content="#aa3bff" />
+    <meta name="description" content="팀별 성경 읽기 순서를 만들고 메시지용 텍스트를 복사하세요" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="Shofar AI" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/favicon.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4605993190727004" crossorigin="anonymous"></script>
+    <title>Shofar AI · 성경 읽기 스케줄</title>
+    <script>
+      (function(){
+        var t = localStorage.getItem('shofar-theme');
+        if (t === 'dark' || t === 'light') document.documentElement.setAttribute('data-theme', t);
+        else if (window.matchMedia('(prefers-color-scheme: dark)').matches) document.documentElement.setAttribute('data-theme', 'dark');
+        else document.documentElement.setAttribute('data-theme', 'light');
+        var m = document.querySelector('meta[name="theme-color"]');
+        if (m) m.setAttribute('content', document.documentElement.getAttribute('data-theme') === 'dark' ? '#1f2028' : '#aa3bff');
+        var lang = localStorage.getItem('shofar-lang') || 'ko';
+        if (['ko','en','es','ja','fa','zh'].indexOf(lang) >= 0) {
+          document.documentElement.lang = lang === 'fa' ? 'fa' : lang === 'zh' ? 'zh-Hans' : lang;
+          document.documentElement.dir = lang === 'fa' ? 'rtl' : 'ltr';
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
