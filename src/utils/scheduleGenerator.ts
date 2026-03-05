@@ -62,7 +62,7 @@ export function generateSchedule(params: GenerateScheduleParams): ScheduleEntry[
     const personCountThisDay = membersPerDayInSet[dayInSet]
 
     for (let personOfDay = 0; personOfDay < personCountThisDay; personOfDay++) {
-      const member = members[memberIndex]
+      const member = members[memberIndex % members.length]
       if (!member) break
 
       for (let chapterCount = 0; chapterCount < chaptersPerPerson; chapterCount++) {

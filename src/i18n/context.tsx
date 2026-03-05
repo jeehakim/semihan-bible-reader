@@ -63,8 +63,11 @@ export function I18nProvider({ children }: { children: React.ReactNode }) {
     (date: Date) => {
       const month = date.getMonth() + 1
       const day = date.getDate()
+      const year = date.getFullYear()
       const dayOfWeek = dayNames[date.getDay()]
-      return `${month}/${day}(${dayOfWeek})`
+      const mm = String(month).padStart(2, '0')
+      const dd = String(day).padStart(2, '0')
+      return `${mm}/${dd}/${year} (${dayOfWeek})`
     },
     [dayNames]
   )

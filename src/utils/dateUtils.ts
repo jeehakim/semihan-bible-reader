@@ -24,12 +24,26 @@ export function formatDateISO(date: Date): string {
   return `${y}-${m}-${d}`
 }
 
-/** Parse "YYYY-MM-DD" as local date (no timezone shift). Returns Invalid Date if string is invalid. */
+/** Normalize API date (YYYY-MM-DD or ISO "YYYY-MM-DDTHH:mm:ss.sssZ") to YYYY-MM-DD for grouping and display. */
+export function normalizeDateKey(dateStr: string): string {
+  if (!dateStr || typeof dateStr !== 'string') return ''
+  const s = dateStr.trim()
+  const tIndex = s.indexOf('T')
+  const dateOnly = tIndex >= 0 ? s.slice(0, tIndex) : s
+  const match = dateOnly.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/)
+  if (!match) return dateOnly
+  const [, y, m, d] = match
+  const month = String(Number(m)).padStart(2, '0')
+  const day = String(Number(d)).padStart(2, '0')
+  return `${y}-${month}-${day}`
+}
+
+/** Parse "YYYY-MM-DD" or ISO date string as local date. Returns Invalid Date if string is invalid. */
 export function parseLocalDateString(isoDate: string): Date {
-  if (!isoDate || typeof isoDate !== 'string') return new Date(NaN)
-  const parts = isoDate.trim().split('-').map(Number)
-  const [y, m, d] = parts
-  if (parts.length !== 3 || !Number.isInteger(y) || !Number.isInteger(m) || !Number.isInteger(d)) return new Date(NaN)
+  const normalized = normalizeDateKey(isoDate)
+  if (!normalized) return new Date(NaN)
+  const [y, m, d] = normalized.split('-').map(Number)
+  if (!Number.isInteger(y) || !Number.isInteger(m) || !Number.isInteger(d)) return new Date(NaN)
   if (m < 1 || m > 12 || d < 1 || d > 31) return new Date(NaN)
   const date = new Date(y, m - 1, d)
   return isNaN(date.getTime()) ? new Date(NaN) : date

@@ -10,6 +10,7 @@ import { ScheduleDisplay } from './components/ScheduleDisplay'
 import { AdSenseUnit } from './components/AdSenseUnit'
 import { bibleBooks } from './data/bibleBooks'
 import { generateSchedule } from './utils/scheduleGenerator'
+import { normalizeDateKey } from './utils/dateUtils'
 import { api } from './lib/api'
 import './App.css'
 
@@ -128,10 +129,12 @@ function App() {
   ): ScheduleGroup[] {
     const groups: { [date: string]: ScheduleGroup } = {}
     schedules.forEach((s) => {
-      if (!groups[s.date]) {
-        groups[s.date] = { date: s.date, dayOfWeek: '', assignments: [] }
+      const dateKey = normalizeDateKey(s.date)
+      if (!dateKey) return
+      if (!groups[dateKey]) {
+        groups[dateKey] = { date: dateKey, dayOfWeek: '', assignments: [] }
       }
-      groups[s.date].assignments.push({
+      groups[dateKey].assignments.push({
         memberName: s.member_name ?? '',
         bookName: s.book_name ?? '',
         chapter: s.chapter ?? 0
