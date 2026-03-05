@@ -1,8 +1,9 @@
-export type Locale = 'ko' | 'en' | 'es' | 'ja' | 'fa' | 'zh'
+export type Locale = 'ko' | 'en' | 'he' | 'es' | 'ja' | 'fa' | 'zh'
 
 export const LOCALE_LABELS: Record<Locale, string> = {
   ko: '한국어',
   en: 'English',
+  he: 'Israel',
   es: 'Español',
   ja: '日本語',
   fa: 'فارسی',
@@ -13,6 +14,7 @@ export const LOCALE_LABELS: Record<Locale, string> = {
 export const LOCALE_FLAGS: Record<Locale, string> = {
   ko: '🇰🇷',
   en: '🇺🇸',
+  he: '🇮🇱',
   es: '🇪🇸',
   ja: '🇯🇵',
   fa: '🇮🇷',
@@ -22,6 +24,7 @@ export const LOCALE_FLAGS: Record<Locale, string> = {
 export const DAY_NAMES: Record<Locale, string[]> = {
   ko: ['일', '월', '화', '수', '목', '금', '토'],
   en: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+  he: ['א\'', 'ב\'', 'ג\'', 'ד\'', 'ה\'', 'ו\'', 'ש'],
   es: ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'],
   ja: ['日', '月', '火', '水', '木', '金', '土'],
   fa: ['یکشنبه', 'دوشنبه', 'سه\u200cشنبه', 'چهارشنبه', 'پنج\u200cشنبه', 'جمعه', 'شنبه'],
@@ -146,23 +149,23 @@ export const translations: Record<Locale, TranslationKeys> = {
       visits: '방문 수'
     },
     org: {
-      title: '조직',
+      title: '교회/단체',
       using: '사용 중:',
-      searchPlaceholder: '조직 이름 검색',
+      searchPlaceholder: '교회/단체 이름 검색',
       searching: '검색 중…',
       matchingOrgs: '검색 결과',
       clickToJoin: '클릭하여 참여',
       noSearchResults: '검색 결과가 없습니다.',
-      namePlaceholder: '조직 이름',
-      createWithName: '새 조직 이름',
-      createHint: '검색 결과에 없으면 새 조직을 만드세요.',
-      addOrg: '조직 추가',
-      emptyHint: '조직을 추가한 뒤 팀을 만드세요.',
+      namePlaceholder: '교회/단체 이름',
+      createWithName: '새 교회/단체 이름',
+      createHint: '검색 결과에 없으면 새 교회/단체를 만드세요.',
+      addOrg: '교회/단체 추가',
+      emptyHint: '교회/단체를 추가한 뒤 팀을 만드세요.',
       save: '저장',
       cancel: '취소',
       delete: '삭제',
-      confirmDelete: '이 조직을 삭제할까요? (팀이 없을 때만 삭제 가능)',
-      selectOrg: '조직 선택'
+      confirmDelete: '이 교회/단체를 삭제할까요? (팀이 없을 때만 삭제 가능)',
+      selectOrg: '교회/단체 선택'
     },
     team: {
       title: '팀 관리',
@@ -311,6 +314,99 @@ export const translations: Record<Locale, TranslationKeys> = {
       title: 'Team Dashboard',
       completion: 'Completion',
       empty: 'No teams yet.'
+    }
+  }),
+  he: makeTranslations({
+    nav: {
+      productName: 'לוח קריאת התנ"ך',
+      themeToLight: 'מעבר למצב בהיר',
+      themeToDark: 'מעבר למצב כהה',
+      themeLight: 'מצב בהיר',
+      themeDark: 'מצב כהה',
+      home: 'Shofar AI בית',
+      language: 'שפה'
+    },
+    app: {
+      title: 'לוח קריאת התנ"ך',
+      tagline: 'צור סדר קריאה לצוות והעתק טקסט מוכן להודעה.',
+      alertSelectTeam: 'נא לבחור צוות ליצירת הלוח.',
+      alertAddMembers: 'נא להוסיף חברים לצוות תחילה.',
+      alertError: 'אירעה שגיאה ביצירת הלוח.',
+      visits: 'ביקורים'
+    },
+    org: {
+      title: 'ארגונים',
+      using: 'בשימוש:',
+      searchPlaceholder: 'חיפוש שם ארגון',
+      searching: 'מחפש…',
+      matchingOrgs: 'ארגונים תואמים',
+      clickToJoin: 'לחץ להצטרפות',
+      noSearchResults: 'לא נמצאו ארגונים תואמים.',
+      namePlaceholder: 'שם ארגון',
+      createWithName: 'שם ארגון חדש',
+      createHint: 'צור ארגון חדש אם אין התאמה.',
+      addOrg: 'הוסף ארגון',
+      emptyHint: 'הוסף ארגון, ואז הוסף צוותים.',
+      save: 'שמור',
+      cancel: 'ביטול',
+      delete: 'מחק',
+      confirmDelete: 'למחוק ארגון זה? (רק כאשר אין צוותים.)',
+      selectOrg: 'בחר ארגון'
+    },
+    team: {
+      title: 'ניהול צוות',
+      searchPlaceholder: 'חיפוש שם צוות',
+      noSearchResults: 'לא נמצאו צוותים תואמים.',
+      teamNamePlaceholder: 'שם צוות',
+      addTeam: 'הוסף צוות',
+      emptyHint: 'הוסף צוות, ואז הוסף חברים.',
+      save: 'שמור',
+      cancel: 'ביטול',
+      delete: 'מחק',
+      editName: 'ערוך שם',
+      deleteTeam: 'מחק צוות',
+      confirmDelete: 'למחוק צוות זה? כל החברים יוסרו.',
+      select: 'בחר',
+      selected: '✓ נבחר',
+      selectForSchedule: 'בחר צוות ללוח',
+      membersCount: '{n}',
+      dragToReorder: 'גרור לסידור מחדש'
+    },
+    member: {
+      namePlaceholder: 'הזן שם',
+      add: 'הוסף',
+      delete: 'מחק',
+      moveUp: 'למעלה',
+      moveDown: 'למטה',
+      emptyHint: 'הוסף חברים.',
+      dragToReorder: 'גרור לסידור מחדש'
+    },
+    schedule: {
+      title: 'הגדרות לוח',
+      startDate: 'תאריך התחלה',
+      startBook: 'ספר התחלה',
+      startChapter: 'פרק התחלה',
+      chaptersPerPerson: 'פרקים לאדם',
+      daysPerSet: 'ימים לכל סט',
+      sets: 'מספר סטים',
+      hint: 'צוות נבחר: {n} חברים · {days} ימים סה"כ',
+      generate: 'צור לוח',
+      generating: 'יוצר...'
+    },
+    scheduleDisplay: {
+      empty: 'אין עדיין לוח. הוסף חברים וצור לוח.',
+      schedule: 'לוח {name}',
+      scheduleTitle: '{orgName}: {teamName} לוח קריאת התנ"ך',
+      generatedSchedule: 'לוח שנוצר',
+      copy: 'העתק',
+      copied: 'הועתק!',
+      copyAll: 'העתק הכל',
+      chapter: ' פרק'
+    },
+    dashboard: {
+      title: 'לוח צוות',
+      completion: 'השלמה',
+      empty: 'אין עדיין צוותים.'
     }
   }),
   es: makeTranslations({

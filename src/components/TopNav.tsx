@@ -4,12 +4,12 @@ import { useI18n, LOCALE_LABELS, LOCALE_FLAGS, type Locale } from '../i18n/conte
 
 const NAV_LINKS = [
   { label: 'ShofarGPT', href: 'https://shofar.ai' },
-  { label: 'Shofar Monitor', href: 'https://monitor.shofar.ai' },
-  { label: 'ChMS', href: 'https://chms.shofar.ai' },
+  { label: 'Persecution Watch', href: 'https://watch.shofar.ai' },
+  { label: 'ChMS/CRM', href: 'https://chms.shofar.ai' },
   { label: 'Social Media', href: 'https://media.shofar.ai', disabled: true }
 ]
 
-const LOCALES: Locale[] = ['ko', 'en', 'es', 'ja', 'fa', 'zh']
+const LOCALES: Locale[] = ['ko', 'en', 'he', 'es', 'ja', 'zh', 'fa']
 
 export function TopNav() {
   const { theme, toggleTheme } = useTheme()

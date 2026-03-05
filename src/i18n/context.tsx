@@ -8,7 +8,7 @@ const DEFAULT_LOCALE: Locale = 'ko'
 function getStoredLocale(): Locale {
   if (typeof window === 'undefined') return DEFAULT_LOCALE
   const stored = localStorage.getItem(STORAGE_KEY) as Locale | null
-  if (stored && (stored === 'ko' || stored === 'en' || stored === 'es' || stored === 'ja' || stored === 'fa' || stored === 'zh')) return stored
+  if (stored && (stored === 'ko' || stored === 'en' || stored === 'he' || stored === 'es' || stored === 'ja' || stored === 'fa' || stored === 'zh')) return stored
   return DEFAULT_LOCALE
 }
 
@@ -46,8 +46,8 @@ export function I18nProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, locale)
-    document.documentElement.lang = locale === 'fa' ? 'fa' : locale === 'zh' ? 'zh-Hans' : locale
-    document.documentElement.dir = locale === 'fa' ? 'rtl' : 'ltr'
+    document.documentElement.lang = locale === 'fa' ? 'fa' : locale === 'zh' ? 'zh-Hans' : locale === 'he' ? 'he' : locale
+    document.documentElement.dir = locale === 'fa' || locale === 'he' ? 'rtl' : 'ltr'
   }, [locale])
 
   const t = useCallback<TFunction>(
