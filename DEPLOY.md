@@ -31,10 +31,17 @@ Data is stored in **PostgreSQL**. Add the **Postgres** plugin to your Railway pr
 
 | Variable         | Default | Description                                                                 |
 |------------------|---------|-----------------------------------------------------------------------------|
-| `DATABASE_URL`   | -       | **Required.** Postgres connection URL (set by Railway when Postgres is added). |
-| `PORT`           | 3000    | Set by Railway automatically                                                |
-| `NODE_ENV`       | -       | Set to `production` in production; hides internal error messages in API       |
-| `ALLOWED_ORIGIN` | -       | Optional. Your app URL (e.g. `https://scheduler.shofar.ai`) to restrict CORS. If unset, all origins allowed. |
+| `DATABASE_URL`   | -       | **Required.** Postgres connection URL. In Railway: reference your Postgres service’s **private** `DATABASE_URL` (Variables → Add variable → Reference → Postgres → `DATABASE_URL`). Using the private URL keeps traffic in-Railway and **avoids egress fees**. Do not use the public DB URL here. |
+| `PORT`                 | 3000    | Set by Railway automatically                                                |
+| `NODE_ENV`             | -       | Set to `production` in production; hides internal error messages in API       |
+| `ALLOWED_ORIGIN`       | -       | Optional. Your app URL (e.g. `https://scheduler.shofar.ai`) to restrict CORS. If unset, all origins allowed. |
+
+### Data not persisting after redeploy
+
+- **Link the app to the same Postgres service:** In Railway, your **app service** must have `DATABASE_URL` set by **reference** to your Postgres service (Variables → Add variable → Reference → Postgres → `DATABASE_URL`). Use the **private** URL so traffic stays in-Railway and avoids egress fees. Do not use the public DB URL.
+- **One Postgres for the project:** Use a single Postgres plugin for the project. Don’t create a new Postgres per deploy or per branch unless you intend to use a separate DB.
+- **Check health:** After deploy, open `https://your-app.up.railway.app/api/health`. You should see `{"ok":true,"database":"connected"}`. If you see `database: "disconnected"` or 503, the app is not talking to Postgres (wrong or missing URL).
+- **Check logs:** On startup the app logs `Database: using DATABASE_URL (private)` and `Database connected and schema ready`. If you see "Missing required config" or "Database ping failed", set `DATABASE_URL` (referenced from Postgres) and redeploy.
 
 ## Security (no-login app behind Cloudflare)
 

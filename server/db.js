@@ -24,6 +24,16 @@ export async function query(sql, params = []) {
   return p.query(sql, params)
 }
 
+/** Returns true if DB is reachable. Use for health check. */
+export async function ping() {
+  try {
+    await query('SELECT 1')
+    return true
+  } catch {
+    return false
+  }
+}
+
 export async function initSchema() {
   const q = (sql, params) => query(sql, params)
   await q(`

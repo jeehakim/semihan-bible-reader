@@ -3,7 +3,7 @@ import cors from 'cors'
 import path from 'path'
 import { fileURLToPath } from 'url'
 import { config, isProd } from './config.js'
-import { query, initSchema, randomUUID } from './db.js'
+import { query, initSchema, ping, randomUUID } from './db.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const app = express()
@@ -98,21 +98,11 @@ app.patch('/api/organizations/:id', async (req, res) => {
   }
 })
 
-app.delete('/api/organizations/:id', async (req, res) => {
-  try {
-    const id = safeUuid(req.params.id)
-    if (!id) return res.status(400).json({ error: 'Invalid organization id' })
-    const teamCount = await query('SELECT COUNT(*) AS n FROM teams WHERE org_id = $1', [id])
-    if (Number(teamCount.rows[0]?.n) > 0) {
-      return res.status(400).json({ error: 'Delete or move teams first' })
-    }
-    const result = await query('DELETE FROM organizations WHERE id = $1', [id])
-    if (result.rowCount === 0) return res.status(404).json({ error: 'Organization not found' })
-    res.status(204).send()
-  } catch (err) {
-    console.error(err)
-    res.status(500).json({ error: isProd ? 'Server error' : err.message })
-  }
+// Organization deletion disabled to prevent accidental loss of all teams and members
+app.delete('/api/organizations/:id', (req, res) => {
+  res.status(403).json({
+    error: 'Organization deletion is disabled to protect teams and members data.'
+  })
 })
 
 // --- Teams (scoped by orgId) ---
@@ -408,9 +398,13 @@ app.post('/api/schedules', async (req, res) => {
   }
 })
 
-// Health check for Railway
-app.get('/api/health', (req, res) => {
-  res.json({ ok: true })
+// Health check for Railway (verifies DB connection)
+app.get('/api/health', async (req, res) => {
+  const dbOk = await ping()
+  if (!dbOk) {
+    return res.status(503).json({ ok: false, database: 'disconnected' })
+  }
+  res.json({ ok: true, database: 'connected' })
 })
 
 // Visit counter: increment and return total (one call per page load from client)
@@ -435,7 +429,16 @@ app.get('*', (req, res, next) => {
 })
 
 async function start() {
+  if (!config.databaseUrl) {
+    throw new Error('DATABASE_URL must be set. In Railway: reference the private DATABASE_URL from your Postgres service (avoids egress fees).')
+  }
+  console.log('Database: using DATABASE_URL (private)')
   await initSchema()
+  const dbOk = await ping()
+  if (!dbOk) {
+    throw new Error('Database ping failed after schema init. Check DATABASE_URL is correct and the Postgres service is running.')
+  }
+  console.log('Database connected and schema ready')
   app.listen(PORT, '0.0.0.0', () => {
     console.log(`Server running on port ${PORT}`)
   })

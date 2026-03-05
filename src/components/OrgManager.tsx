@@ -84,25 +84,6 @@ export function OrgManager({ selectedOrgId, onSelectOrg, onOrgsUpdate }: OrgMana
     }
   }
 
-  async function deleteOrg(id: string) {
-    if (!confirm(t('org.confirmDelete'))) return
-    setCreateLoading(true)
-    try {
-      await api.deleteOrganization(id)
-      if (selectedOrgId === id) {
-        setCurrentOrgName(null)
-        onSelectOrg(null)
-      }
-      setSearchResults((prev) => prev.filter((o) => o.id !== id))
-      onOrgsUpdate?.()
-    } catch (e) {
-      console.error(e)
-      alert((e as Error).message)
-    } finally {
-      setCreateLoading(false)
-    }
-  }
-
   function selectOrg(org: Organization) {
     setCurrentOrgName(org.name)
     onSelectOrg(org.id)
@@ -124,15 +105,6 @@ export function OrgManager({ selectedOrgId, onSelectOrg, onOrgsUpdate }: OrgMana
         <div className="org-current">
           <span className="org-current-label">{t('org.using')}</span>
           <span className="org-current-name">{currentOrgName}</span>
-          <button
-            type="button"
-            className="btn-icon btn-danger"
-            onClick={() => deleteOrg(selectedOrgId)}
-            disabled={createLoading}
-            title={t('org.delete')}
-          >
-            {t('org.delete')}
-          </button>
         </div>
       )}
 

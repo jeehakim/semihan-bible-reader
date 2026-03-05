@@ -9,7 +9,7 @@ function env(key, defaultValue) {
 }
 
 export const config = {
-  /** Postgres connection URL (required in production). */
+  /** Postgres connection URL. On Railway use the private DATABASE_URL (no egress fees). */
   databaseUrl: env('DATABASE_URL', ''),
   port: Number(env('PORT', '3000')) || 3000,
   nodeEnv: env('NODE_ENV', 'development'),
@@ -24,6 +24,6 @@ export function requireConfig(checks) {
   const missing = []
   if (checks.databaseUrl && !config.databaseUrl) missing.push('DATABASE_URL')
   if (missing.length) {
-    throw new Error(`Missing required config: ${missing.join(', ')}. Set in Railway Variables or .env.`)
+    throw new Error(`Missing required config: ${missing.join(', ')}. In Railway: Variables → Add variable → reference Postgres → DATABASE_URL (use private URL to avoid egress fees).`)
   }
 }
