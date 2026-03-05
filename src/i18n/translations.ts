@@ -34,9 +34,12 @@ export type TranslationKeys = {
     alertSelectTeam: string
     alertAddMembers: string
     alertError: string
+    visits: string
   }
   team: {
     title: string
+    searchPlaceholder: string
+    noSearchResults: string
     teamNamePlaceholder: string
     addTeam: string
     emptyHint: string
@@ -108,10 +111,13 @@ export const translations: Record<Locale, TranslationKeys> = {
       tagline: '팀별 읽기 순서를 만들고 메시지용 텍스트를 복사하세요',
       alertSelectTeam: '스케줄을 생성할 팀을 선택해주세요.',
       alertAddMembers: '해당 팀에 멤버를 먼저 추가해주세요.',
-      alertError: '스케줄 생성 중 오류가 발생했습니다.'
+      alertError: '스케줄 생성 중 오류가 발생했습니다.',
+      visits: '방문 수'
     },
     team: {
       title: '팀 관리',
+      searchPlaceholder: '팀 이름 검색',
+      noSearchResults: '검색 결과가 없습니다.',
       teamNamePlaceholder: '팀 이름',
       addTeam: '팀 추가',
       emptyHint: '팀을 추가한 뒤 팀원을 등록하세요.',
@@ -177,10 +183,13 @@ export const translations: Record<Locale, TranslationKeys> = {
       tagline: 'Create team reading order and copy message-ready text.',
       alertSelectTeam: 'Please select a team to generate the schedule.',
       alertAddMembers: 'Please add members to the team first.',
-      alertError: 'An error occurred while generating the schedule.'
+      alertError: 'An error occurred while generating the schedule.',
+      visits: 'Visits'
     },
     team: {
       title: 'Team Management',
+      searchPlaceholder: 'Search team name',
+      noSearchResults: 'No teams match your search.',
       teamNamePlaceholder: 'Team name',
       addTeam: 'Add Team',
       emptyHint: 'Add a team, then add members.',
@@ -246,10 +255,13 @@ export const translations: Record<Locale, TranslationKeys> = {
       tagline: 'Crea el orden de lectura por equipo y copia el texto para mensajes.',
       alertSelectTeam: 'Selecciona un equipo para generar el calendario.',
       alertAddMembers: 'Añade miembros al equipo primero.',
-      alertError: 'Error al generar el calendario.'
+      alertError: 'Error al generar el calendario.',
+      visits: 'Visitas'
     },
     team: {
       title: 'Equipos',
+      searchPlaceholder: 'Buscar por nombre de equipo',
+      noSearchResults: 'Ningún equipo coincide con la búsqueda.',
       teamNamePlaceholder: 'Nombre del equipo',
       addTeam: 'Añadir equipo',
       emptyHint: 'Añade un equipo y luego los miembros.',
@@ -315,10 +327,13 @@ export const translations: Record<Locale, TranslationKeys> = {
       tagline: 'チームの読み順を作成し、メッセージ用テキストをコピーできます。',
       alertSelectTeam: 'スケジュールを生成するチームを選択してください。',
       alertAddMembers: 'まずチームにメンバーを追加してください。',
-      alertError: 'スケジュールの生成中にエラーが発生しました。'
+      alertError: 'スケジュールの生成中にエラーが発生しました。',
+      visits: '訪問数'
     },
     team: {
       title: 'チーム管理',
+      searchPlaceholder: 'チーム名で検索',
+      noSearchResults: '検索に一致するチームがありません。',
       teamNamePlaceholder: 'チーム名',
       addTeam: 'チームを追加',
       emptyHint: 'チームを追加してからメンバーを登録してください。',
@@ -384,10 +399,13 @@ export const translations: Record<Locale, TranslationKeys> = {
       tagline: 'ترتیب مطالعه تیم را بسازید و متن را کپی کنید.',
       alertSelectTeam: 'یک تیم برای ساخت برنامه انتخاب کنید.',
       alertAddMembers: 'ابتدا اعضای تیم را اضافه کنید.',
-      alertError: 'خطا در ساخت برنامه.'
+      alertError: 'خطا در ساخت برنامه.',
+      visits: 'بازدیدها'
     },
     team: {
       title: 'مدیریت تیم',
+      searchPlaceholder: 'جستجوی نام تیم',
+      noSearchResults: 'تیمی با این جستجو یافت نشد.',
       teamNamePlaceholder: 'نام تیم',
       addTeam: 'افزودن تیم',
       emptyHint: 'تیم اضافه کنید، سپس اعضا را ثبت کنید.',
@@ -453,10 +471,13 @@ export const translations: Record<Locale, TranslationKeys> = {
       tagline: '创建团队阅读顺序，复制可用于消息的文本。',
       alertSelectTeam: '请选择要生成日程的团队。',
       alertAddMembers: '请先为该团队添加成员。',
-      alertError: '生成日程时出错。'
+      alertError: '生成日程时出错。',
+      visits: '访问量'
     },
     team: {
       title: '团队管理',
+      searchPlaceholder: '搜索团队名称',
+      noSearchResults: '没有匹配的团队。',
       teamNamePlaceholder: '团队名称',
       addTeam: '添加团队',
       emptyHint: '先添加团队，再添加成员。',

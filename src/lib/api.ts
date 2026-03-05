@@ -57,5 +57,9 @@ export const api = {
         body: JSON.stringify({ teamId, entries, completedReadThrough }),
         cache: 'no-store'
       }
-    )
+    ),
+
+  /** Record a visit and return the total visit count. */
+  recordVisit: () =>
+    request<{ count: number }>('/visit', { cache: 'no-store' })
 }

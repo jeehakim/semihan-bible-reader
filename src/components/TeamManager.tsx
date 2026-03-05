@@ -12,6 +12,7 @@ interface TeamManagerProps {
 export function TeamManager({ onTeamsUpdate, selectedTeamId, onSelectTeam }: TeamManagerProps) {
   const { t } = useI18n()
   const [teams, setTeams] = useState<Team[]>([])
+  const [teamSearch, setTeamSearch] = useState('')
   const [membersByTeam, setMembersByTeam] = useState<Record<string, Member[]>>({})
   const [expandedTeams, setExpandedTeams] = useState<Set<string>>(new Set())
   const [newTeamName, setNewTeamName] = useState('')
@@ -177,10 +178,26 @@ export function TeamManager({ onTeamsUpdate, selectedTeamId, onSelectTeam }: Tea
     }
   }
 
+  const searchLower = teamSearch.trim().toLowerCase()
+  const filteredTeams = searchLower
+    ? teams.filter((team) => team.name.toLowerCase().includes(searchLower))
+    : teams
+
   return (
     <div className="team-manager">
       <div className="panel-header">
         <h2>{t('team.title')}</h2>
+      </div>
+
+      <div className="team-search">
+        <input
+          type="search"
+          value={teamSearch}
+          onChange={(e) => setTeamSearch(e.target.value)}
+          placeholder={t('team.searchPlaceholder')}
+          disabled={loading}
+          aria-label={t('team.searchPlaceholder')}
+        />
       </div>
 
       <div className="add-team">
@@ -198,10 +215,12 @@ export function TeamManager({ onTeamsUpdate, selectedTeamId, onSelectTeam }: Tea
       </div>
 
       <div className="team-list">
-        {teams.length === 0 && (
-          <p className="empty-hint">{t('team.emptyHint')}</p>
+        {filteredTeams.length === 0 && (
+          <p className="empty-hint">
+            {teams.length === 0 ? t('team.emptyHint') : t('team.noSearchResults')}
+          </p>
         )}
-        {teams.map((team) => {
+        {filteredTeams.map((team) => {
           const isExpanded = expandedTeams.has(team.id)
           const members = membersByTeam[team.id] ?? []
           const isSelected = selectedTeamId === team.id

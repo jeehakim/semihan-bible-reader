@@ -13,7 +13,7 @@ function getInitialTheme(): Theme {
 function applyTheme(theme: Theme) {
   document.documentElement.setAttribute('data-theme', theme)
   const meta = document.querySelector('meta[name="theme-color"]')
-  if (meta) meta.setAttribute('content', theme === 'dark' ? '#1f2028' : '#aa3bff')
+  if (meta) meta.setAttribute('content', theme === 'dark' ? '#141316' : '#c41e3a')
 }
 
 export function useTheme() {

@@ -51,6 +51,9 @@ export function initSchema(db) {
     CREATE INDEX IF NOT EXISTS idx_members_order ON members(team_id, order_index);
     CREATE INDEX IF NOT EXISTS idx_schedules_team ON schedules(team_id);
     CREATE INDEX IF NOT EXISTS idx_schedules_date ON schedules(team_id, date);
+
+    CREATE TABLE IF NOT EXISTS visit_count (id INTEGER PRIMARY KEY CHECK (id = 1), n INTEGER NOT NULL DEFAULT 0);
+    INSERT OR IGNORE INTO visit_count (id, n) VALUES (1, 0);
   `)
   // Migration: add completion_count to existing teams tables
   try {

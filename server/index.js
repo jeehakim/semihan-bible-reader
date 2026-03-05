@@ -337,6 +337,18 @@ app.get('/api/health', (req, res) => {
   res.json({ ok: true })
 })
 
+// Visit counter: increment and return total (one call per page load from client)
+app.get('/api/visit', (req, res) => {
+  try {
+    db.prepare('UPDATE visit_count SET n = n + 1 WHERE id = 1').run()
+    const row = db.prepare('SELECT n AS count FROM visit_count WHERE id = 1').get()
+    res.json({ count: row ? row.count : 0 })
+  } catch (err) {
+    console.error(err)
+    res.status(500).json({ error: isProd ? 'Server error' : err.message })
+  }
+})
+
 // Serve static frontend (React build)
 const distPath = path.join(__dirname, '..', 'dist')
 app.use(express.static(distPath))

@@ -1,23 +1,24 @@
 :root,
 [data-theme="light"] {
-  --text: #6b6375;
-  --text-h: #08060d;
-  --bg: #fff;
-  --border: #e5e4e7;
-  --code-bg: #f4f3ec;
-  --accent: #aa3bff;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
-  --social-bg: rgba(244, 243, 236, 0.5);
+  --text: #4a4458;
+  --text-h: #0d0c0f;
+  --bg: #fefefe;
+  --border: #e8e6ea;
+  --code-bg: #f6f5f2;
+  /* Logo red (shofar) */
+  --accent: #c41e3a;
+  --accent-bg: rgba(196, 30, 58, 0.08);
+  --accent-border: rgba(196, 30, 58, 0.4);
+  --social-bg: rgba(246, 245, 242, 0.6);
   --shadow:
-    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+    rgba(0, 0, 0, 0.06) 0 4px 12px -2px, rgba(0, 0, 0, 0.04) 0 2px 6px -2px;
 
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
+  --sans: 'DM Sans', system-ui, -apple-system, sans-serif;
+  --heading: 'DM Sans', system-ui, -apple-system, sans-serif;
+  --mono: 'DM Mono', ui-monospace, Consolas, monospace;
 
-  font: 18px/145% var(--sans);
-  letter-spacing: 0.18px;
+  font: 18px/1.5 var(--sans);
+  letter-spacing: 0.02em;
   color-scheme: light dark;
   color: var(--text);
   background: var(--bg);
@@ -32,33 +33,33 @@
 }
 
 [data-theme="dark"] {
-  --text: #9ca3af;
-  --text-h: #f3f4f6;
-  --bg: #16171d;
-  --border: #2e303a;
-  --code-bg: #1f2028;
-  --accent: #c084fc;
-  --accent-bg: rgba(192, 132, 252, 0.15);
-  --accent-border: rgba(192, 132, 252, 0.5);
-  --social-bg: rgba(47, 48, 58, 0.5);
+  --text: #a1a1aa;
+  --text-h: #fafafa;
+  --bg: #141316;
+  --border: #2c2a2e;
+  --code-bg: #1c1a1f;
+  --accent: #e53935;
+  --accent-bg: rgba(229, 57, 53, 0.12);
+  --accent-border: rgba(229, 57, 53, 0.45);
+  --social-bg: rgba(28, 26, 31, 0.6);
   --shadow:
-    rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
+    rgba(0, 0, 0, 0.35) 0 8px 20px -4px, rgba(0, 0, 0, 0.2) 0 4px 8px -2px;
 }
 
 /* System preference when no explicit theme set */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --text: #9ca3af;
-    --text-h: #f3f4f6;
-    --bg: #16171d;
-    --border: #2e303a;
-    --code-bg: #1f2028;
-    --accent: #c084fc;
-    --accent-bg: rgba(192, 132, 252, 0.15);
-    --accent-border: rgba(192, 132, 252, 0.5);
-    --social-bg: rgba(47, 48, 58, 0.5);
+    --text: #a1a1aa;
+    --text-h: #fafafa;
+    --bg: #141316;
+    --border: #2c2a2e;
+    --code-bg: #1c1a1f;
+    --accent: #e53935;
+    --accent-bg: rgba(229, 57, 53, 0.12);
+    --accent-border: rgba(229, 57, 53, 0.45);
+    --social-bg: rgba(28, 26, 31, 0.6);
     --shadow:
-      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
+      rgba(0, 0, 0, 0.35) 0 8px 20px -4px, rgba(0, 0, 0, 0.2) 0 4px 8px -2px;
   }
 }
 

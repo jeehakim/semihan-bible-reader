@@ -21,9 +21,14 @@ function App() {
   const [members, setMembers] = useState<Member[]>([])
   const [scheduleGroups, setScheduleGroups] = useState<ScheduleGroup[]>([])
   const [isGenerating, setIsGenerating] = useState(false)
+  const [visitCount, setVisitCount] = useState<number | null>(null)
 
   useEffect(() => {
     loadTeams()
+  }, [])
+
+  useEffect(() => {
+    api.recordVisit().then(({ count }) => setVisitCount(count)).catch(() => {})
   }, [])
 
   useEffect(() => {
@@ -163,10 +168,22 @@ function App() {
             onCopy={handleCopy}
             teamName={teams.find((t) => t.id === selectedTeamId)?.name}
           />
+        </main>
+
+        <div className="app-full-width">
           <AdSenseUnit />
           <TeamDashboard teams={teams} />
-        </main>
+        </div>
       </div>
+
+      <footer className="app-footer">
+        <p className="app-footer-copyright">
+          © {new Date().getFullYear()} Shofar AI
+          {visitCount != null && (
+            <span className="app-footer-visits"> · {t('app.visits')}: {visitCount.toLocaleString()}</span>
+          )}
+        </p>
+      </footer>
     </div>
   )
 }

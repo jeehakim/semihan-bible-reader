@@ -17,14 +17,31 @@ git push -u origin main
 
 Railway can then connect to this repo and deploy using the Dockerfile.
 
+## Data persistence (important)
+
+**Without a volume, all data (teams, members, schedules) is lost on every redeploy**, because the container filesystem is ephemeral. To keep data across redeploys you must attach a **Volume** and point the app at it.
+
+The app stores SQLite in the directory set by `DATABASE_DIR` (default `/data` in the Dockerfile). If that directory is a **mounted volume**, the database file lives on Railway’s storage, not inside the container, so it survives redeploys.
+
 ## One-time setup
 
 1. **Create a Railway project** and connect your GitHub repo (or deploy from CLI).
-2. **Add a Volume** (required for data persistence):
-   - In the Railway dashboard, open your service → **Variables** → **Volumes**.
-   - Add a volume and set the **mount path** to: `/data`
-   - The app uses `DATABASE_DIR=/data` so the SQLite file is stored on this volume.
-3. **Deploy**: Railway will build from the `Dockerfile` and run the container. No extra build command needed.
+2. **Add a Volume** (required so data does not reset on redeploy). In the **Railway console** (dashboard):
+
+   **Option A – From the project canvas**
+   - Press **⌘K** (Mac) or **Ctrl+K** (Windows/Linux) to open the Command Palette, or **right‑click** on the project canvas.
+   - Choose **“Add Volume”** (or search for “volume” in the palette).
+   - When asked, select the **service** that runs this app (the one built from the Dockerfile).
+   - After the volume is created, set its **mount path** (see Option B, step 4).
+
+   **Option B – From the service**
+   - Click your **service** (the app that runs the Dockerfile).
+   - Open the **Settings** tab.
+   - Scroll to the **Volumes** section.
+   - Click **“Add Volume”** or **“Attach Volume”**.
+   - In the dialog: enter the **mount path** **`/data`** (exactly that path; the app uses `DATABASE_DIR=/data`).
+   - Confirm with **“Add”**, **“Attach”**, **“Connect”**, or **“Done”** (Railway has no separate “Save” — confirming the dialog attaches the volume and applies the mount path). The SQLite file `scheduler.db` will then be stored on the volume and persist across redeploys.
+3. **Deploy**: Railway builds from the `Dockerfile` and runs the container. After the volume is attached, redeploys keep your data.
 
 ## Environment (optional)
 

@@ -21,7 +21,7 @@ RUN cd server && npm install --omit=dev
 COPY server server
 COPY --from=frontend /app/dist dist
 
-# Railway: set PORT in dashboard; mount volume at /data for SQLite
+# Data lives in DATABASE_DIR. Mount a volume at /data so it persists across redeploys.
 ENV DATABASE_DIR=/data
 ENV NODE_ENV=production
 EXPOSE 3000
