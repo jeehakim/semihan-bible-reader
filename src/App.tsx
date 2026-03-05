@@ -28,12 +28,27 @@ function getStoredId(key: string): string | null {
 function App() {
   const { t } = useI18n()
   const [selectedOrgId, setSelectedOrgId] = useState<string | null>(() => getStoredId(STORAGE_ORG_KEY))
+  const [selectedOrgName, setSelectedOrgName] = useState<string | null>(null)
   const [teams, setTeams] = useState<{ id: string; name: string; completion_count: number }[]>([])
   const [selectedTeamId, setSelectedTeamId] = useState<string | null>(() => getStoredId(STORAGE_TEAM_KEY))
   const [members, setMembers] = useState<Member[]>([])
   const [scheduleGroups, setScheduleGroups] = useState<ScheduleGroup[]>([])
   const [isGenerating, setIsGenerating] = useState(false)
   const [visitCount, setVisitCount] = useState<number | null>(null)
+
+  useEffect(() => {
+    if (!selectedOrgId) {
+      setSelectedOrgName(null)
+      return
+    }
+    let cancelled = false
+    api.getOrganizations().then((list) => {
+      if (cancelled) return
+      const org = list.find((o) => o.id === selectedOrgId)
+      setSelectedOrgName(org?.name ?? null)
+    }).catch(() => setSelectedOrgName(null))
+    return () => { cancelled = true }
+  }, [selectedOrgId])
 
   useEffect(() => {
     if (selectedOrgId) {
@@ -206,6 +221,7 @@ function App() {
           <ScheduleDisplay
             scheduleGroups={scheduleGroups}
             onCopy={handleCopy}
+            orgName={selectedOrgName}
             teamName={teams.find((t) => t.id === selectedTeamId)?.name}
           />
         </main>

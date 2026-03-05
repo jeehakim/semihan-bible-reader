@@ -69,6 +69,7 @@ export function TeamManager({ selectedOrgId, onTeamsUpdate, selectedTeamId, onSe
       onTeamsUpdate()
     } catch (e) {
       console.error(e)
+      alert((e as Error).message)
     } finally {
       setLoading(false)
     }
@@ -85,6 +86,7 @@ export function TeamManager({ selectedOrgId, onTeamsUpdate, selectedTeamId, onSe
       onTeamsUpdate()
     } catch (e) {
       console.error(e)
+      alert((e as Error).message)
     } finally {
       setLoading(false)
     }

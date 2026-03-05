@@ -70,6 +70,10 @@ app.post('/api/organizations', async (req, res) => {
     if (!name) {
       return res.status(400).json({ error: 'name is required' })
     }
+    const existing = await query('SELECT 1 FROM organizations WHERE LOWER(TRIM(name)) = LOWER($1)', [name])
+    if (existing.rows.length > 0) {
+      return res.status(409).json({ error: 'An organization with this name already exists.' })
+    }
     const id = randomUUID()
     const next = await query('SELECT COALESCE(MAX(order_index), -1) + 1 AS next FROM organizations')
     const order_index = next.rows[0]?.next ?? 0
@@ -137,6 +141,10 @@ app.post('/api/teams', async (req, res) => {
     }
     const org = await query('SELECT id FROM organizations WHERE id = $1', [oid])
     if (org.rows.length === 0) return res.status(404).json({ error: 'Organization not found' })
+    const dupTeam = await query('SELECT 1 FROM teams WHERE org_id = $1 AND LOWER(TRIM(name)) = LOWER($2)', [oid, name])
+    if (dupTeam.rows.length > 0) {
+      return res.status(409).json({ error: 'This organization already has a team with this name.' })
+    }
     const id = randomUUID()
     const maxOrder = await query('SELECT COALESCE(MAX(order_index), -1) + 1 AS next FROM teams WHERE org_id = $1', [oid])
     const order_index = maxOrder.rows[0]?.next ?? 0
@@ -157,10 +165,15 @@ app.patch('/api/teams/:id', async (req, res) => {
     const id = safeUuid(req.params.id)
     if (!id) return res.status(400).json({ error: 'Invalid team id' })
     const { name, order_index } = req.body || {}
-    const existing = await query('SELECT id FROM teams WHERE id = $1', [id])
+    const existing = await query('SELECT id, org_id FROM teams WHERE id = $1', [id])
     if (existing.rows.length === 0) return res.status(404).json({ error: 'Team not found' })
     if (name !== undefined) {
-      await query('UPDATE teams SET name = $1 WHERE id = $2', [trimName(name), id])
+      const newName = trimName(name)
+      const dup = await query('SELECT 1 FROM teams WHERE org_id = $1 AND LOWER(TRIM(name)) = LOWER($2) AND id != $3', [existing.rows[0].org_id, newName, id])
+      if (dup.rows.length > 0) {
+        return res.status(409).json({ error: 'This organization already has a team with this name.' })
+      }
+      await query('UPDATE teams SET name = $1 WHERE id = $2', [newName, id])
     }
     if (typeof order_index === 'number') {
       await query('UPDATE teams SET order_index = $1 WHERE id = $2', [order_index, id])

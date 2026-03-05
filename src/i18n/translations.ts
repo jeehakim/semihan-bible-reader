@@ -108,6 +108,7 @@ export type TranslationKeys = {
   scheduleDisplay: {
     empty: string
     schedule: string
+    scheduleTitle: string
     generatedSchedule: string
     copy: string
     copied: string
@@ -206,6 +207,7 @@ export const translations: Record<Locale, TranslationKeys> = {
     scheduleDisplay: {
       empty: '생성된 스케줄이 없습니다. 먼저 멤버를 추가하고 스케줄을 생성해주세요.',
       schedule: '{name} 스케줄',
+      scheduleTitle: '{orgName}: {teamName} 성경읽기 스케줄',
       generatedSchedule: '생성된 스케줄',
       copy: '복사',
       copied: '복사됨!',
@@ -298,6 +300,7 @@ export const translations: Record<Locale, TranslationKeys> = {
     scheduleDisplay: {
       empty: 'No schedule yet. Add members and generate a schedule.',
       schedule: '{name} Schedule',
+      scheduleTitle: '{orgName}: {teamName} Bible Reading Schedule',
       generatedSchedule: 'Generated Schedule',
       copy: 'Copy',
       copied: 'Copied!',
@@ -390,6 +393,7 @@ export const translations: Record<Locale, TranslationKeys> = {
     scheduleDisplay: {
       empty: 'Aún no hay calendario. Añade miembros y genera uno.',
       schedule: 'Calendario de {name}',
+      scheduleTitle: '{orgName}: {teamName} Calendario de lectura bíblica',
       generatedSchedule: 'Calendario generado',
       copy: 'Copiar',
       copied: '¡Copiado!',
@@ -482,6 +486,7 @@ export const translations: Record<Locale, TranslationKeys> = {
     scheduleDisplay: {
       empty: 'スケジュールがありません。メンバーを追加して生成してください。',
       schedule: '{name} スケジュール',
+      scheduleTitle: '{orgName}: {teamName} 聖書通読スケジュール',
       generatedSchedule: '生成されたスケジュール',
       copy: 'コピー',
       copied: 'コピーしました！',
@@ -574,6 +579,7 @@ export const translations: Record<Locale, TranslationKeys> = {
     scheduleDisplay: {
       empty: 'برنامه\u200cای وجود ندارد. اعضا را اضافه و برنامه بسازید.',
       schedule: 'برنامه {name}',
+      scheduleTitle: '{orgName}: {teamName} برنامه خواندن کتاب مقدس',
       generatedSchedule: 'برنامه ساخته\u200cشده',
       copy: 'کپی',
       copied: 'کپی شد!',
@@ -666,6 +672,7 @@ export const translations: Record<Locale, TranslationKeys> = {
     scheduleDisplay: {
       empty: '暂无日程。请先添加成员并生成日程。',
       schedule: '{name} 日程',
+      scheduleTitle: '{orgName}: {teamName} 圣经阅读日程',
       generatedSchedule: '已生成日程',
       copy: '复制',
       copied: '已复制！',

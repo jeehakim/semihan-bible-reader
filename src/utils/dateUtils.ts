@@ -24,10 +24,15 @@ export function formatDateISO(date: Date): string {
   return `${y}-${m}-${d}`
 }
 
-/** Parse "YYYY-MM-DD" as local date (no timezone shift). */
+/** Parse "YYYY-MM-DD" as local date (no timezone shift). Returns Invalid Date if string is invalid. */
 export function parseLocalDateString(isoDate: string): Date {
-  const [y, m, d] = isoDate.split('-').map(Number)
-  return new Date(y, m - 1, d)
+  if (!isoDate || typeof isoDate !== 'string') return new Date(NaN)
+  const parts = isoDate.trim().split('-').map(Number)
+  const [y, m, d] = parts
+  if (parts.length !== 3 || !Number.isInteger(y) || !Number.isInteger(m) || !Number.isInteger(d)) return new Date(NaN)
+  if (m < 1 || m > 12 || d < 1 || d > 31) return new Date(NaN)
+  const date = new Date(y, m - 1, d)
+  return isNaN(date.getTime()) ? new Date(NaN) : date
 }
 
 /** Today's date as YYYY-MM-DD in local time (never use toISOString for date inputs). */

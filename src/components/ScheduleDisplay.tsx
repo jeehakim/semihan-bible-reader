@@ -6,13 +6,29 @@ import type { ScheduleGroup } from '../types'
 interface ScheduleDisplayProps {
   scheduleGroups: ScheduleGroup[]
   onCopy: (text: string) => void
-  teamName?: string
+  orgName?: string | null
+  teamName?: string | null
 }
 
-export function ScheduleDisplay({ scheduleGroups, onCopy, teamName }: ScheduleDisplayProps) {
+function formatDateSafe(
+  dateStr: string,
+  formatDate: (d: Date) => string
+): string {
+  const d = parseLocalDateString(dateStr)
+  if (isNaN(d.getTime())) return dateStr || '—'
+  return formatDate(d)
+}
+
+export function ScheduleDisplay({ scheduleGroups, onCopy, orgName, teamName }: ScheduleDisplayProps) {
   const { t, formatDate } = useI18n()
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null)
   const chapterLabel = t('scheduleDisplay.chapter')
+  const scheduleTitle =
+    orgName != null && orgName !== '' && teamName != null && teamName !== ''
+      ? t('scheduleDisplay.scheduleTitle', { orgName, teamName })
+      : teamName
+        ? t('scheduleDisplay.schedule', { name: teamName })
+        : t('scheduleDisplay.generatedSchedule')
 
   if (scheduleGroups.length === 0) {
     return (
@@ -23,7 +39,7 @@ export function ScheduleDisplay({ scheduleGroups, onCopy, teamName }: ScheduleDi
   }
 
   function formatScheduleGroup(group: ScheduleGroup): string {
-    let text = `${formatDate(parseLocalDateString(group.date))}\n`
+    let text = `${formatDateSafe(group.date, formatDate)}\n`
 
     group.assignments.forEach((assignment, index) => {
       const isFirstPerson = index === 0
@@ -50,7 +66,8 @@ export function ScheduleDisplay({ scheduleGroups, onCopy, teamName }: ScheduleDi
   }
 
   function handleCopyAll() {
-    const allText = scheduleGroups.map(formatScheduleGroup).join('\n')
+    const body = scheduleGroups.map(formatScheduleGroup).join('\n')
+    const allText = scheduleTitle ? `${scheduleTitle}\n\n${body}` : body
     onCopy(allText)
     setCopiedIndex(-1)
     setTimeout(() => setCopiedIndex(null), 2000)
@@ -59,7 +76,7 @@ export function ScheduleDisplay({ scheduleGroups, onCopy, teamName }: ScheduleDi
   return (
     <div className="schedule-display">
       <div className="schedule-header">
-        <h2>{teamName ? t('scheduleDisplay.schedule', { name: teamName }) : t('scheduleDisplay.generatedSchedule')}</h2>
+        <h2>{scheduleTitle}</h2>
         <button onClick={handleCopyAll} className="btn-copy-all">
           {copiedIndex === -1 ? t('scheduleDisplay.copied') : t('scheduleDisplay.copyAll')}
         </button>
@@ -69,7 +86,7 @@ export function ScheduleDisplay({ scheduleGroups, onCopy, teamName }: ScheduleDi
         {scheduleGroups.map((group, groupIndex) => (
           <div key={groupIndex} className="schedule-group">
             <div className="schedule-group-header">
-              <h3>{formatDate(parseLocalDateString(group.date))}</h3>
+              <h3>{formatDateSafe(group.date, formatDate)}</h3>
               <button
                 onClick={() => handleCopy(groupIndex)}
                 className="btn-copy"

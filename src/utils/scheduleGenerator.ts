@@ -66,8 +66,14 @@ export function generateSchedule(params: GenerateScheduleParams): ScheduleEntry[
       if (!member) break
 
       for (let chapterCount = 0; chapterCount < chaptersPerPerson; chapterCount++) {
-        const book = bibleBooks[currentBookIndex]
-        if (!book) return schedule
+        // Wrap around Bible so all sets are generated (do not stop at Revelation)
+        let book = bibleBooks[currentBookIndex]
+        if (!book) {
+          currentBookIndex = 0
+          currentChapter = 1
+          book = bibleBooks[0]
+        }
+        if (!book) continue
 
         schedule.push({
           member_id: member.id,
@@ -82,9 +88,9 @@ export function generateSchedule(params: GenerateScheduleParams): ScheduleEntry[
         if (currentChapter > book.chapters) {
           currentBookIndex++
           currentChapter = 1
-
           if (currentBookIndex >= bibleBooks.length) {
-            return schedule
+            currentBookIndex = 0
+            currentChapter = 1
           }
         }
       }
