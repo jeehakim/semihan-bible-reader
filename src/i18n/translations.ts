@@ -132,7 +132,7 @@ function makeTranslations(t: TranslationKeys): TranslationKeys {
 export const translations: Record<Locale, TranslationKeys> = {
   ko: makeTranslations({
     nav: {
-      productName: '성경 읽기 스케줄',
+      productName: '성경 읽기 스케줄러',
       themeToLight: '라이트 모드로 전환',
       themeToDark: '다크 모드로 전환',
       themeLight: '라이트 모드',
@@ -141,7 +141,7 @@ export const translations: Record<Locale, TranslationKeys> = {
       language: '언어'
     },
     app: {
-      title: '성경 읽기 스케줄',
+      title: '성경 읽기 스케줄러',
       tagline: '팀별 읽기 순서를 만들고 메시지용 텍스트를 복사하세요',
       alertSelectTeam: '스케줄을 생성할 팀을 선택해주세요.',
       alertAddMembers: '해당 팀에 멤버를 먼저 추가해주세요.',
@@ -225,7 +225,7 @@ export const translations: Record<Locale, TranslationKeys> = {
   }),
   en: makeTranslations({
     nav: {
-      productName: 'Bible Reading Schedule',
+      productName: 'Bible Reading Scheduler',
       themeToLight: 'Switch to light mode',
       themeToDark: 'Switch to dark mode',
       themeLight: 'Light mode',
@@ -234,7 +234,7 @@ export const translations: Record<Locale, TranslationKeys> = {
       language: 'Language'
     },
     app: {
-      title: 'Bible Reading Schedule',
+      title: 'Bible Reading Scheduler',
       tagline: 'Create team reading order and copy message-ready text.',
       alertSelectTeam: 'Please select a team to generate the schedule.',
       alertAddMembers: 'Please add members to the team first.',
