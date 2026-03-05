@@ -30,12 +30,12 @@ export function ScheduleDisplay({ scheduleGroups, onCopy, teamName }: ScheduleDi
       const showBookName = isFirstPerson ||
         assignment.bookName !== group.assignments[index - 1].bookName
 
-      const name = assignment.memberName.padEnd(6, ' ')
+      const name = (assignment.memberName ?? '').padEnd(6, ' ')
 
       if (showBookName) {
-        text += `${name} ${assignment.bookName} ${assignment.chapter}${chapterLabel}\n`
+        text += `${name} ${assignment.bookName ?? ''} ${assignment.chapter ?? 0}${chapterLabel}\n`
       } else {
-        text += `${name} ${assignment.chapter}${chapterLabel}\n`
+        text += `${name} ${assignment.chapter ?? 0}${chapterLabel}\n`
       }
     })
 
@@ -86,12 +86,12 @@ export function ScheduleDisplay({ scheduleGroups, onCopy, teamName }: ScheduleDi
 
                 return (
                   <div key={assignmentIndex} className="assignment-item">
-                    <span className="assignment-name">{assignment.memberName}</span>
+                    <span className="assignment-name">{assignment.memberName ?? ''}</span>
                     <span className="assignment-reading">
                       {showBookName && (
-                        <span className="book-name">{assignment.bookName} </span>
+                        <span className="book-name">{assignment.bookName ?? ''} </span>
                       )}
-                      <span className="chapter">{assignment.chapter}{chapterLabel}</span>
+                      <span className="chapter">{assignment.chapter ?? 0}{chapterLabel}</span>
                     </span>
                   </div>
                 )

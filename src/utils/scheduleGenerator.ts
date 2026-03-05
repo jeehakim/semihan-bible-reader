@@ -52,28 +52,28 @@ export function generateSchedule(params: GenerateScheduleParams): ScheduleEntry[
   let currentChapter = startChapter
   let memberIndex = 0
 
-  const membersPerDay = getMembersPerDay(members.length, days)
+  // Distribute members evenly within each set (e.g. 10 members, 2 days/set → 5 per day, repeated for each set)
+  const membersPerDayInSet = getMembersPerDay(members.length, daysPerSet)
 
   for (let day = 0; day < days; day++) {
     const date = addDays(startDate, day)
     const dateStr = formatDateISO(date)
-    const personCountThisDay = membersPerDay[day]
+    const dayInSet = day % daysPerSet
+    const personCountThisDay = membersPerDayInSet[dayInSet]
 
     for (let personOfDay = 0; personOfDay < personCountThisDay; personOfDay++) {
       const member = members[memberIndex]
+      if (!member) break
 
       for (let chapterCount = 0; chapterCount < chaptersPerPerson; chapterCount++) {
         const book = bibleBooks[currentBookIndex]
-
-        if (!book) {
-          return schedule
-        }
+        if (!book) return schedule
 
         schedule.push({
           member_id: member.id,
-          memberName: member.name,
+          memberName: member.name ?? '',
           date: dateStr,
-          book_name: book.korean,
+          book_name: book.korean ?? '',
           chapter: currentChapter
         })
 

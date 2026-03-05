@@ -15,20 +15,42 @@ import './App.css'
 
 const lastBibleBook = bibleBooks[bibleBooks.length - 1]
 
+const STORAGE_ORG_KEY = 'shofar-selected-org-id'
+const STORAGE_TEAM_KEY = 'shofar-selected-team-id'
+const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
+
+function getStoredId(key: string): string | null {
+  if (typeof window === 'undefined') return null
+  const v = localStorage.getItem(key)
+  return v && UUID_REGEX.test(v) ? v : null
+}
+
 function App() {
   const { t } = useI18n()
-  const [selectedOrgId, setSelectedOrgId] = useState<string | null>(null)
+  const [selectedOrgId, setSelectedOrgId] = useState<string | null>(() => getStoredId(STORAGE_ORG_KEY))
   const [teams, setTeams] = useState<{ id: string; name: string; completion_count: number }[]>([])
-  const [selectedTeamId, setSelectedTeamId] = useState<string | null>(null)
+  const [selectedTeamId, setSelectedTeamId] = useState<string | null>(() => getStoredId(STORAGE_TEAM_KEY))
   const [members, setMembers] = useState<Member[]>([])
   const [scheduleGroups, setScheduleGroups] = useState<ScheduleGroup[]>([])
   const [isGenerating, setIsGenerating] = useState(false)
   const [visitCount, setVisitCount] = useState<number | null>(null)
 
   useEffect(() => {
-    if (selectedOrgId) loadTeams(selectedOrgId)
-    else setTeams([])
+    if (selectedOrgId) {
+      localStorage.setItem(STORAGE_ORG_KEY, selectedOrgId)
+      loadTeams(selectedOrgId)
+    } else {
+      localStorage.removeItem(STORAGE_ORG_KEY)
+      localStorage.removeItem(STORAGE_TEAM_KEY)
+      setTeams([])
+      setSelectedTeamId(null)
+    }
   }, [selectedOrgId])
+
+  useEffect(() => {
+    if (selectedTeamId) localStorage.setItem(STORAGE_TEAM_KEY, selectedTeamId)
+    else localStorage.removeItem(STORAGE_TEAM_KEY)
+  }, [selectedTeamId])
 
   useEffect(() => {
     api.recordVisit().then(({ count }) => setVisitCount(count)).catch(() => {})
@@ -95,9 +117,9 @@ function App() {
         groups[s.date] = { date: s.date, dayOfWeek: '', assignments: [] }
       }
       groups[s.date].assignments.push({
-        memberName: s.member_name,
-        bookName: s.book_name,
-        chapter: s.chapter
+        memberName: s.member_name ?? '',
+        bookName: s.book_name ?? '',
+        chapter: s.chapter ?? 0
       })
     })
     return Object.values(groups).sort((a, b) => a.date.localeCompare(b.date))
