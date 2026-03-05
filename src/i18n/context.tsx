@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect, useCallback } from 'react'
 import type { Locale } from './translations'
-import { translations, LOCALE_LABELS, DAY_NAMES } from './translations'
+import { translations, LOCALE_LABELS, LOCALE_FLAGS, DAY_NAMES } from './translations'
 
 const STORAGE_KEY = 'shofar-lang'
 const DEFAULT_LOCALE: Locale = 'ko'
@@ -90,5 +90,5 @@ export function useI18n() {
   return ctx
 }
 
-export { LOCALE_LABELS }
+export { LOCALE_LABELS, LOCALE_FLAGS }
 export type { Locale }

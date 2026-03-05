@@ -9,6 +9,16 @@ export const LOCALE_LABELS: Record<Locale, string> = {
   zh: '中文'
 }
 
+/** Flag emoji per locale (e.g. English = USA). */
+export const LOCALE_FLAGS: Record<Locale, string> = {
+  ko: '🇰🇷',
+  en: '🇺🇸',
+  es: '🇪🇸',
+  ja: '🇯🇵',
+  fa: '🇮🇷',
+  zh: '🇨🇳'
+}
+
 export const DAY_NAMES: Record<Locale, string[]> = {
   ko: ['일', '월', '화', '수', '목', '금', '토'],
   en: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
@@ -35,6 +45,25 @@ export type TranslationKeys = {
     alertAddMembers: string
     alertError: string
     visits: string
+  }
+  org: {
+    title: string
+    using: string
+    searchPlaceholder: string
+    searching: string
+    matchingOrgs: string
+    clickToJoin: string
+    noSearchResults: string
+    namePlaceholder: string
+    createWithName: string
+    createHint: string
+    addOrg: string
+    emptyHint: string
+    save: string
+    cancel: string
+    delete: string
+    confirmDelete: string
+    selectOrg: string
   }
   team: {
     title: string
@@ -70,7 +99,8 @@ export type TranslationKeys = {
     startBook: string
     startChapter: string
     chaptersPerPerson: string
-    days: string
+    daysPerSet: string
+    sets: string
     hint: string
     generate: string
     generating: string
@@ -114,6 +144,25 @@ export const translations: Record<Locale, TranslationKeys> = {
       alertError: '스케줄 생성 중 오류가 발생했습니다.',
       visits: '방문 수'
     },
+    org: {
+      title: '조직',
+      using: '사용 중:',
+      searchPlaceholder: '조직 이름 검색',
+      searching: '검색 중…',
+      matchingOrgs: '검색 결과',
+      clickToJoin: '클릭하여 참여',
+      noSearchResults: '검색 결과가 없습니다.',
+      namePlaceholder: '조직 이름',
+      createWithName: '새 조직 이름',
+      createHint: '검색 결과에 없으면 새 조직을 만드세요.',
+      addOrg: '조직 추가',
+      emptyHint: '조직을 추가한 뒤 팀을 만드세요.',
+      save: '저장',
+      cancel: '취소',
+      delete: '삭제',
+      confirmDelete: '이 조직을 삭제할까요? (팀이 없을 때만 삭제 가능)',
+      selectOrg: '조직 선택'
+    },
     team: {
       title: '팀 관리',
       searchPlaceholder: '팀 이름 검색',
@@ -148,8 +197,9 @@ export const translations: Record<Locale, TranslationKeys> = {
       startBook: '시작 성경책',
       startChapter: '시작 장',
       chaptersPerPerson: '1인당 장 수',
-      days: '생성할 일수',
-      hint: '선택 팀: {n}명 기준으로 생성됩니다',
+      daysPerSet: '세트당 일수',
+      sets: '세트 수',
+      hint: '선택 팀: {n}명 · 총 {days}일',
       generate: '스케줄 생성',
       generating: '생성 중...'
     },
@@ -186,6 +236,25 @@ export const translations: Record<Locale, TranslationKeys> = {
       alertError: 'An error occurred while generating the schedule.',
       visits: 'Visits'
     },
+    org: {
+      title: 'Organizations',
+      using: 'Using:',
+      searchPlaceholder: 'Search organization name',
+      searching: 'Searching…',
+      matchingOrgs: 'Matching organizations',
+      clickToJoin: 'Click to join',
+      noSearchResults: 'No organizations match your search.',
+      namePlaceholder: 'Organization name',
+      createWithName: 'New organization name',
+      createHint: 'Create a new organization if none match.',
+      addOrg: 'Add Organization',
+      emptyHint: 'Add an organization, then add teams.',
+      save: 'Save',
+      cancel: 'Cancel',
+      delete: 'Delete',
+      confirmDelete: 'Delete this organization? (Only when it has no teams.)',
+      selectOrg: 'Select organization'
+    },
     team: {
       title: 'Team Management',
       searchPlaceholder: 'Search team name',
@@ -220,8 +289,9 @@ export const translations: Record<Locale, TranslationKeys> = {
       startBook: 'Start book',
       startChapter: 'Start chapter',
       chaptersPerPerson: 'Chapters per person',
-      days: 'Number of days',
-      hint: 'Generating for selected team: {n} members',
+      daysPerSet: 'Days per set',
+      sets: 'Number of sets',
+      hint: 'Selected team: {n} members · {days} days total',
       generate: 'Generate Schedule',
       generating: 'Generating...'
     },
@@ -258,6 +328,25 @@ export const translations: Record<Locale, TranslationKeys> = {
       alertError: 'Error al generar el calendario.',
       visits: 'Visitas'
     },
+    org: {
+      title: 'Organizaciones',
+      using: 'Usando:',
+      searchPlaceholder: 'Buscar por nombre de organización',
+      searching: 'Buscando…',
+      matchingOrgs: 'Organizaciones encontradas',
+      clickToJoin: 'Clic para unirse',
+      noSearchResults: 'Ninguna organización coincide con la búsqueda.',
+      namePlaceholder: 'Nombre de la organización',
+      createWithName: 'Nombre de la nueva organización',
+      createHint: 'Crea una organización nueva si no hay coincidencias.',
+      addOrg: 'Añadir organización',
+      emptyHint: 'Añade una organización y luego equipos.',
+      save: 'Guardar',
+      cancel: 'Cancelar',
+      delete: 'Eliminar',
+      confirmDelete: '¿Eliminar esta organización? (Solo cuando no tenga equipos.)',
+      selectOrg: 'Seleccionar organización'
+    },
     team: {
       title: 'Equipos',
       searchPlaceholder: 'Buscar por nombre de equipo',
@@ -292,8 +381,9 @@ export const translations: Record<Locale, TranslationKeys> = {
       startBook: 'Libro inicial',
       startChapter: 'Capítulo inicial',
       chaptersPerPerson: 'Capítulos por persona',
-      days: 'Días a generar',
-      hint: 'Equipo seleccionado: {n} miembros',
+      daysPerSet: 'Días por set',
+      sets: 'Número de sets',
+      hint: 'Equipo seleccionado: {n} miembros · {days} días total',
       generate: 'Generar calendario',
       generating: 'Generando...'
     },
@@ -330,6 +420,25 @@ export const translations: Record<Locale, TranslationKeys> = {
       alertError: 'スケジュールの生成中にエラーが発生しました。',
       visits: '訪問数'
     },
+    org: {
+      title: '組織',
+      using: '使用中:',
+      searchPlaceholder: '組織名で検索',
+      searching: '検索中…',
+      matchingOrgs: '一致する組織',
+      clickToJoin: 'クリックして参加',
+      noSearchResults: '検索に一致する組織がありません。',
+      namePlaceholder: '組織名',
+      createWithName: '新規組織名',
+      createHint: '一致しない場合は新規組織を作成してください。',
+      addOrg: '組織を追加',
+      emptyHint: '組織を追加してからチームを作成してください。',
+      save: '保存',
+      cancel: 'キャンセル',
+      delete: '削除',
+      confirmDelete: 'この組織を削除しますか？（チームがない場合のみ削除可能）',
+      selectOrg: '組織を選択'
+    },
     team: {
       title: 'チーム管理',
       searchPlaceholder: 'チーム名で検索',
@@ -364,8 +473,9 @@ export const translations: Record<Locale, TranslationKeys> = {
       startBook: '開始書',
       startChapter: '開始章',
       chaptersPerPerson: '1人あたりの章数',
-      days: '生成する日数',
-      hint: '選択チーム: {n}名で生成',
+      daysPerSet: 'セットあたりの日数',
+      sets: 'セット数',
+      hint: '選択チーム: {n}名 · 合計 {days} 日',
       generate: 'スケジュール生成',
       generating: '生成中...'
     },
@@ -402,6 +512,25 @@ export const translations: Record<Locale, TranslationKeys> = {
       alertError: 'خطا در ساخت برنامه.',
       visits: 'بازدیدها'
     },
+    org: {
+      title: 'سازمان‌ها',
+      using: 'در حال استفاده:',
+      searchPlaceholder: 'جستجوی نام سازمان',
+      searching: 'در حال جستجو…',
+      matchingOrgs: 'سازمان‌های مطابق',
+      clickToJoin: 'کلیک برای پیوستن',
+      noSearchResults: 'سازمانی با این جستجو یافت نشد.',
+      namePlaceholder: 'نام سازمان',
+      createWithName: 'نام سازمان جدید',
+      createHint: 'در صورت عدم تطابق، سازمان جدید بسازید.',
+      addOrg: 'افزودن سازمان',
+      emptyHint: 'یک سازمان اضافه کنید، سپس تیم‌ها را اضافه کنید.',
+      save: 'ذخیره',
+      cancel: 'لغو',
+      delete: 'حذف',
+      confirmDelete: 'این سازمان حذف شود؟ (فقط وقتی تیمی نداشته باشد.)',
+      selectOrg: 'انتخاب سازمان'
+    },
     team: {
       title: 'مدیریت تیم',
       searchPlaceholder: 'جستجوی نام تیم',
@@ -436,8 +565,9 @@ export const translations: Record<Locale, TranslationKeys> = {
       startBook: 'کتاب شروع',
       startChapter: 'فصل شروع',
       chaptersPerPerson: 'فصل به ازای هر نفر',
-      days: 'تعداد روزها',
-      hint: 'تیم انتخاب\u200cشده: {n} نفر',
+      daysPerSet: 'روز در هر ست',
+      sets: 'تعداد ست\u200cها',
+      hint: 'تیم انتخاب\u200cشده: {n} نفر · جمع {days} روز',
       generate: 'ساخت برنامه',
       generating: 'در حال ساخت...'
     },
@@ -474,6 +604,25 @@ export const translations: Record<Locale, TranslationKeys> = {
       alertError: '生成日程时出错。',
       visits: '访问量'
     },
+    org: {
+      title: '组织',
+      using: '使用中：',
+      searchPlaceholder: '搜索组织名称',
+      searching: '搜索中…',
+      matchingOrgs: '匹配的组织',
+      clickToJoin: '点击加入',
+      noSearchResults: '没有匹配的组织。',
+      namePlaceholder: '组织名称',
+      createWithName: '新组织名称',
+      createHint: '若无匹配结果可创建新组织。',
+      addOrg: '添加组织',
+      emptyHint: '先添加组织，再添加团队。',
+      save: '保存',
+      cancel: '取消',
+      delete: '删除',
+      confirmDelete: '确定删除此组织？（仅当没有团队时可删除）',
+      selectOrg: '选择组织'
+    },
     team: {
       title: '团队管理',
       searchPlaceholder: '搜索团队名称',
@@ -508,8 +657,9 @@ export const translations: Record<Locale, TranslationKeys> = {
       startBook: '起始书卷',
       startChapter: '起始章',
       chaptersPerPerson: '每人章数',
-      days: '生成天数',
-      hint: '已选团队：{n} 人',
+      daysPerSet: '每组天数',
+      sets: '组数',
+      hint: '已选团队：{n} 人 · 共 {days} 天',
       generate: '生成日程',
       generating: '生成中...'
     },

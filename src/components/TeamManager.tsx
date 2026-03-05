@@ -4,12 +4,13 @@ import { useI18n } from '../i18n/context'
 import type { Team, Member } from '../types'
 
 interface TeamManagerProps {
+  selectedOrgId: string | null
   onTeamsUpdate: () => void
   selectedTeamId: string | null
   onSelectTeam: (id: string | null) => void
 }
 
-export function TeamManager({ onTeamsUpdate, selectedTeamId, onSelectTeam }: TeamManagerProps) {
+export function TeamManager({ selectedOrgId, onTeamsUpdate, selectedTeamId, onSelectTeam }: TeamManagerProps) {
   const { t } = useI18n()
   const [teams, setTeams] = useState<Team[]>([])
   const [teamSearch, setTeamSearch] = useState('')
@@ -26,19 +27,23 @@ export function TeamManager({ onTeamsUpdate, selectedTeamId, onSelectTeam }: Tea
   const [dragOverMemberId, setDragOverMemberId] = useState<string | null>(null)
 
   useEffect(() => {
-    loadTeams()
-  }, [])
+    if (selectedOrgId) loadTeams()
+    else setTeams([])
+  }, [selectedOrgId])
 
   async function loadTeams() {
+    if (!selectedOrgId) return
     try {
-      const data = await api.getTeams()
+      const data = await api.getTeams(selectedOrgId)
       setTeams(data)
       if (data.length > 0 && !selectedTeamId) {
         onSelectTeam(data[0].id)
+      } else if (selectedTeamId && !data.some((team) => team.id === selectedTeamId)) {
+        onSelectTeam(data[0]?.id ?? null)
       }
-      for (const t of data) {
-        const members = await api.getMembers(t.id)
-        setMembersByTeam((prev) => ({ ...prev, [t.id]: members }))
+      for (const team of data) {
+        const members = await api.getMembers(team.id)
+        setMembersByTeam((prev) => ({ ...prev, [team.id]: members }))
       }
     } catch (e) {
       console.error(e)
@@ -55,10 +60,10 @@ export function TeamManager({ onTeamsUpdate, selectedTeamId, onSelectTeam }: Tea
   }
 
   async function addTeam() {
-    if (!newTeamName.trim()) return
+    if (!newTeamName.trim() || !selectedOrgId) return
     setLoading(true)
     try {
-      await api.createTeam(newTeamName.trim())
+      await api.createTeam(newTeamName.trim(), selectedOrgId)
       setNewTeamName('')
       await loadTeams()
       onTeamsUpdate()
@@ -141,7 +146,8 @@ export function TeamManager({ onTeamsUpdate, selectedTeamId, onSelectTeam }: Tea
     reordered.splice(toIndex, 0, removed)
     setLoading(true)
     try {
-      const updated = await api.reorderTeams(reordered.map((t) => t.id))
+      if (!selectedOrgId) return
+      const updated = await api.reorderTeams(selectedOrgId, reordered.map((t) => t.id))
       setTeams(updated)
       onTeamsUpdate()
     } catch (e) {
@@ -189,6 +195,10 @@ export function TeamManager({ onTeamsUpdate, selectedTeamId, onSelectTeam }: Tea
         <h2>{t('team.title')}</h2>
       </div>
 
+      {!selectedOrgId ? (
+        <p className="empty-hint">{t('org.selectOrg')}</p>
+      ) : (
+        <>
       <div className="team-search">
         <input
           type="search"
@@ -435,6 +445,8 @@ export function TeamManager({ onTeamsUpdate, selectedTeamId, onSelectTeam }: Tea
           )
         })}
       </div>
+        </>
+      )}
     </div>
   )
 }

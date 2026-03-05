@@ -1,5 +1,13 @@
+export interface Organization {
+  id: string
+  name: string
+  order_index: number
+  created_at: string
+}
+
 export interface Team {
   id: string
+  org_id?: string
   name: string
   order_index: number
   completion_count: number

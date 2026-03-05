@@ -9,7 +9,8 @@ interface ScheduleConfigProps {
     startBookIndex: number
     startChapter: number
     chaptersPerPerson: number
-    days: number
+    daysPerSet: number
+    sets: number
   }) => void
   /** Called when user clicks Generate but preconditions fail (e.g. no team/members). */
   onGenerateDisabled?: (message: string) => void
@@ -24,7 +25,8 @@ export function ScheduleConfig({ onGenerate, onGenerateDisabled, isGenerating, s
   const [startBookIndex, setStartBookIndex] = useState(10)
   const [startChapter, setStartChapter] = useState(13)
   const [chaptersPerPerson, setChaptersPerPerson] = useState(1)
-  const [days, setDays] = useState(4)
+  const [daysPerSet, setDaysPerSet] = useState(1)
+  const [sets, setSets] = useState(7)
 
   const bookOptions = getBibleBookOptions()
   const chapterOptions = getChapterOptions(startBookIndex)
@@ -51,7 +53,8 @@ export function ScheduleConfig({ onGenerate, onGenerateDisabled, isGenerating, s
       startBookIndex,
       startChapter,
       chaptersPerPerson,
-      days
+      daysPerSet,
+      sets
     })
   }
 
@@ -126,19 +129,33 @@ export function ScheduleConfig({ onGenerate, onGenerateDisabled, isGenerating, s
         </div>
 
         <div className="form-group">
-          <label>{t('schedule.days')}</label>
+          <label>{t('schedule.daysPerSet')}</label>
           <input
             type="number"
             min="1"
             max="30"
-            value={days}
-            onChange={(e) => setDays(Number(e.target.value))}
+            value={daysPerSet}
+            onChange={(e) => setDaysPerSet(Number(e.target.value))}
+            disabled={isGenerating}
+          />
+        </div>
+
+        <div className="form-group">
+          <label>{t('schedule.sets')}</label>
+          <input
+            type="number"
+            min="1"
+            max="30"
+            value={sets}
+            onChange={(e) => setSets(Number(e.target.value))}
             disabled={isGenerating}
           />
         </div>
 
         {selectedTeamId && memberCount > 0 && (
-          <p className="config-hint">{t('schedule.hint', { n: memberCount })}</p>
+          <p className="config-hint">
+            {t('schedule.hint', { n: memberCount, days: daysPerSet * sets })}
+          </p>
         )}
         <button
           type="button"

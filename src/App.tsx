@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import type { Member, ScheduleGroup } from './types'
 import { useI18n } from './i18n/context'
 import { TopNav } from './components/TopNav'
+import { OrgManager } from './components/OrgManager'
 import { TeamManager } from './components/TeamManager'
 import { TeamDashboard } from './components/TeamDashboard'
 import { ScheduleConfig } from './components/ScheduleConfig'
@@ -16,6 +17,7 @@ const lastBibleBook = bibleBooks[bibleBooks.length - 1]
 
 function App() {
   const { t } = useI18n()
+  const [selectedOrgId, setSelectedOrgId] = useState<string | null>(null)
   const [teams, setTeams] = useState<{ id: string; name: string; completion_count: number }[]>([])
   const [selectedTeamId, setSelectedTeamId] = useState<string | null>(null)
   const [members, setMembers] = useState<Member[]>([])
@@ -24,8 +26,9 @@ function App() {
   const [visitCount, setVisitCount] = useState<number | null>(null)
 
   useEffect(() => {
-    loadTeams()
-  }, [])
+    if (selectedOrgId) loadTeams(selectedOrgId)
+    else setTeams([])
+  }, [selectedOrgId])
 
   useEffect(() => {
     api.recordVisit().then(({ count }) => setVisitCount(count)).catch(() => {})
@@ -41,19 +44,27 @@ function App() {
     }
   }, [selectedTeamId])
 
-  async function loadTeams() {
+  async function loadTeams(orgId: string) {
+    if (!orgId) return
     try {
-      const data = await api.getTeams()
+      const data = await api.getTeams(orgId)
       setTeams(data)
       if (data.length > 0 && !selectedTeamId) {
         setSelectedTeamId(data[0].id)
-      } else if (selectedTeamId && data.some((t) => t.id === selectedTeamId)) {
-        // Re-fetch current team's members so Generate button stays in sync after add/delete team
+      } else if (selectedTeamId && data.some((team) => team.id === selectedTeamId)) {
         loadMembers(selectedTeamId)
+      } else if (data.length > 0) {
+        setSelectedTeamId(data[0].id)
+      } else {
+        setSelectedTeamId(null)
       }
     } catch (e) {
       console.error(e)
     }
+  }
+
+  function handleOrgsUpdate() {
+    if (selectedOrgId) loadTeams(selectedOrgId)
   }
 
   async function loadMembers(teamId: string) {
@@ -97,7 +108,8 @@ function App() {
     startBookIndex: number
     startChapter: number
     chaptersPerPerson: number
-    days: number
+    daysPerSet: number
+    sets: number
   }) {
     if (!selectedTeamId) {
       alert(t('app.alertSelectTeam'))
@@ -123,8 +135,8 @@ function App() {
       // Update UI from save response so we always show the new schedule (avoids cache)
       const grouped = groupSchedulesByDate(saved ?? [])
       setScheduleGroups(grouped)
-      if (completedReadThrough) {
-        loadTeams()
+      if (completedReadThrough && selectedOrgId) {
+        loadTeams(selectedOrgId)
       }
     } catch (e) {
       console.error(e)
@@ -148,8 +160,14 @@ function App() {
 
       <div className="app-content">
         <aside className="left-panel">
+          <OrgManager
+            selectedOrgId={selectedOrgId}
+            onSelectOrg={setSelectedOrgId}
+            onOrgsUpdate={handleOrgsUpdate}
+          />
           <TeamManager
-            onTeamsUpdate={loadTeams}
+            selectedOrgId={selectedOrgId}
+            onTeamsUpdate={() => selectedOrgId && loadTeams(selectedOrgId)}
             selectedTeamId={selectedTeamId}
             onSelectTeam={setSelectedTeamId}
           />

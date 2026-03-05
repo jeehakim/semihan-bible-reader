@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import { useTheme } from '../hooks/useTheme'
-import { useI18n, LOCALE_LABELS, type Locale } from '../i18n/context'
+import { useI18n, LOCALE_LABELS, LOCALE_FLAGS, type Locale } from '../i18n/context'
 
 const NAV_LINKS = [
   { label: 'ShofarGPT', href: 'https://shofar.ai' },
@@ -60,6 +60,7 @@ export function TopNav() {
             aria-label={t('nav.language')}
             title={t('nav.language')}
           >
+            <span className="top-nav-lang-flag" aria-hidden>{LOCALE_FLAGS[locale]}</span>
             <span className="top-nav-lang-label">{LOCALE_LABELS[locale]}</span>
             <span className="top-nav-lang-chevron" aria-hidden>{langOpen ? '▲' : '▼'}</span>
           </button>
@@ -79,6 +80,7 @@ export function TopNav() {
                       setLangOpen(false)
                     }}
                   >
+                    <span className="top-nav-lang-flag" aria-hidden>{LOCALE_FLAGS[loc]}</span>
                     {LOCALE_LABELS[loc]}
                   </button>
                 </li>

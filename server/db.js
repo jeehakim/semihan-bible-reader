@@ -1,67 +1,94 @@
-import Database from 'better-sqlite3'
+import pg from 'pg'
 import { randomUUID } from 'crypto'
-import path from 'path'
-import fs from 'fs'
-import { fileURLToPath } from 'url'
+import { config, requireConfig } from './config.js'
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url))
-const dataDir = process.env.DATABASE_DIR || path.join(__dirname, 'data')
-if (!fs.existsSync(dataDir)) {
-  fs.mkdirSync(dataDir, { recursive: true })
+const { Pool } = pg
+
+let pool = null
+
+export function getPool() {
+  if (!pool) {
+    requireConfig({ databaseUrl: true })
+    pool = new Pool({
+      connectionString: config.databaseUrl,
+      max: 10,
+      idleTimeoutMillis: 30000,
+    })
+  }
+  return pool
 }
-const dbPath = path.join(dataDir, 'scheduler.db')
 
-export function getDb() {
-  const db = new Database(dbPath)
-  db.pragma('journal_mode = WAL')
-  return db
+/** Run a query; returns pg result (use .rows, .rowCount). */
+export async function query(sql, params = []) {
+  const p = getPool()
+  return p.query(sql, params)
 }
 
-export function initSchema(db) {
-  db.exec(`
+export async function initSchema() {
+  const q = (sql, params) => query(sql, params)
+  await q(`
+    CREATE TABLE IF NOT EXISTS organizations (
+      id UUID PRIMARY KEY,
+      name TEXT NOT NULL,
+      order_index INTEGER NOT NULL DEFAULT 0,
+      created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+    )
+  `)
+  await q(`
     CREATE TABLE IF NOT EXISTS teams (
-      id TEXT PRIMARY KEY,
+      id UUID PRIMARY KEY,
+      org_id UUID NOT NULL REFERENCES organizations(id) ON DELETE CASCADE,
       name TEXT NOT NULL,
       order_index INTEGER NOT NULL DEFAULT 0,
       completion_count INTEGER NOT NULL DEFAULT 0,
-      created_at TEXT NOT NULL DEFAULT (datetime('now'))
-    );
-
+      created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+    )
+  `)
+  await q(`CREATE INDEX IF NOT EXISTS idx_teams_org ON teams(org_id)`)
+  await q(`
     CREATE TABLE IF NOT EXISTS members (
-      id TEXT PRIMARY KEY,
-      team_id TEXT NOT NULL REFERENCES teams(id) ON DELETE CASCADE,
+      id UUID PRIMARY KEY,
+      team_id UUID NOT NULL REFERENCES teams(id) ON DELETE CASCADE,
       name TEXT NOT NULL,
       order_index INTEGER NOT NULL DEFAULT 0,
-      is_active INTEGER NOT NULL DEFAULT 1,
-      created_at TEXT NOT NULL DEFAULT (datetime('now'))
-    );
-
+      is_active BOOLEAN NOT NULL DEFAULT true,
+      created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+    )
+  `)
+  await q(`CREATE INDEX IF NOT EXISTS idx_members_team ON members(team_id)`)
+  await q(`CREATE INDEX IF NOT EXISTS idx_members_order ON members(team_id, order_index)`)
+  await q(`
     CREATE TABLE IF NOT EXISTS schedules (
-      id TEXT PRIMARY KEY,
-      team_id TEXT NOT NULL,
-      member_id TEXT NOT NULL,
+      id UUID PRIMARY KEY,
+      team_id UUID NOT NULL,
+      member_id UUID NOT NULL,
       member_name TEXT NOT NULL,
-      date TEXT NOT NULL,
+      date DATE NOT NULL,
       book_name TEXT NOT NULL,
       chapter INTEGER NOT NULL,
-      created_at TEXT NOT NULL DEFAULT (datetime('now'))
-    );
-
-    CREATE INDEX IF NOT EXISTS idx_members_team ON members(team_id);
-    CREATE INDEX IF NOT EXISTS idx_members_order ON members(team_id, order_index);
-    CREATE INDEX IF NOT EXISTS idx_schedules_team ON schedules(team_id);
-    CREATE INDEX IF NOT EXISTS idx_schedules_date ON schedules(team_id, date);
-
-    CREATE TABLE IF NOT EXISTS visit_count (id INTEGER PRIMARY KEY CHECK (id = 1), n INTEGER NOT NULL DEFAULT 0);
-    INSERT OR IGNORE INTO visit_count (id, n) VALUES (1, 0);
+      created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+    )
   `)
-  // Migration: add completion_count to existing teams tables
-  try {
-    const cols = db.prepare("PRAGMA table_info(teams)").all()
-    if (cols.every((c) => c.name !== 'completion_count')) {
-      db.exec('ALTER TABLE teams ADD COLUMN completion_count INTEGER NOT NULL DEFAULT 0')
-    }
-  } catch (_) {}
+  await q(`CREATE INDEX IF NOT EXISTS idx_schedules_team ON schedules(team_id)`)
+  await q(`CREATE INDEX IF NOT EXISTS idx_schedules_date ON schedules(team_id, date)`)
+  await q(`
+    CREATE TABLE IF NOT EXISTS visit_count (
+      id INTEGER PRIMARY KEY CHECK (id = 1),
+      n INTEGER NOT NULL DEFAULT 0
+    )
+  `)
+  await q(`INSERT INTO visit_count (id, n) VALUES (1, 0) ON CONFLICT (id) DO NOTHING`)
+
+  const defaultOrgId = '00000000-0000-4000-8000-000000000001'
+  const orgCheck = await q('SELECT 1 FROM organizations WHERE id = $1', [defaultOrgId])
+  if (orgCheck.rows.length === 0) {
+    const next = await q('SELECT COALESCE(MAX(order_index), -1) + 1 AS next FROM organizations')
+    const order_index = next.rows[0]?.next ?? 0
+    await q(
+      'INSERT INTO organizations (id, name, order_index) VALUES ($1, $2, $3)',
+      [defaultOrgId, 'Default', order_index]
+    )
+  }
 }
 
 export { randomUUID }

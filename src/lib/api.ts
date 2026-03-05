@@ -12,23 +12,41 @@ async function request<T>(path: string, options?: RequestInit): Promise<T> {
 }
 
 export const api = {
-  getTeams: () =>
-    request<{ id: string; name: string; order_index: number; completion_count: number; created_at: string }[]>('/teams'),
-  createTeam: (name: string) =>
-    request<{ id: string; name: string; order_index: number; completion_count: number; created_at: string }>('/teams', {
+  getOrganizations: (search?: string) =>
+    request<import('../types').Organization[]>(
+      search ? `/organizations?search=${encodeURIComponent(search)}` : '/organizations'
+    ),
+  createOrganization: (name: string) =>
+    request<import('../types').Organization>('/organizations', {
       method: 'POST',
       body: JSON.stringify({ name })
     }),
+  updateOrganization: (id: string, name: string) =>
+    request<import('../types').Organization>(`/organizations/${id}`, {
+      method: 'PATCH',
+      body: JSON.stringify({ name })
+    }),
+  deleteOrganization: (id: string) => request(`/organizations/${id}`, { method: 'DELETE' }),
+
+  getTeams: (orgId: string) =>
+    request<{ id: string; org_id?: string; name: string; order_index: number; completion_count: number; created_at: string }[]>(
+      `/teams?orgId=${encodeURIComponent(orgId)}`
+    ),
+  createTeam: (name: string, orgId: string) =>
+    request<{ id: string; org_id?: string; name: string; order_index: number; completion_count: number; created_at: string }>('/teams', {
+      method: 'POST',
+      body: JSON.stringify({ name, orgId })
+    }),
   updateTeam: (id: string, data: { name?: string; order_index?: number }) =>
-    request<{ id: string; name: string; order_index: number; completion_count: number; created_at: string }>(
+    request<{ id: string; org_id?: string; name: string; order_index: number; completion_count: number; created_at: string }>(
       `/teams/${id}`,
       { method: 'PATCH', body: JSON.stringify(data) }
     ),
   deleteTeam: (id: string) => request(`/teams/${id}`, { method: 'DELETE' }),
-  reorderTeams: (teamIds: string[]) =>
-    request<{ id: string; name: string; order_index: number; completion_count: number; created_at: string }[]>(
+  reorderTeams: (orgId: string, teamIds: string[]) =>
+    request<{ id: string; org_id?: string; name: string; order_index: number; completion_count: number; created_at: string }[]>(
       '/teams/reorder',
-      { method: 'POST', body: JSON.stringify({ teamIds }) }
+      { method: 'POST', body: JSON.stringify({ orgId, teamIds }) }
     ),
 
   getMembers: (teamId: string) => request<import('../types').Member[]>(`/teams/${teamId}/members`),

@@ -131,6 +131,11 @@
   background: var(--border);
 }
 
+.top-nav-lang-flag {
+  font-size: 1.1em;
+  line-height: 1;
+}
+
 .top-nav-lang-chevron {
   font-size: 10px;
   opacity: 0.8;
@@ -152,7 +157,9 @@
 }
 
 .top-nav-lang-option {
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: 8px;
   width: 100%;
   padding: 8px 14px;
   border: none;
@@ -297,6 +304,7 @@
     font-size: 22px;
   }
 
+  .org-manager,
   .team-manager,
   .schedule-config,
   .schedule-display {
@@ -318,6 +326,8 @@
     padding: 10px 14px;
   }
 
+  .org-search input,
+  .add-org input,
   .team-search input,
   .add-member input,
   .add-team input,
@@ -462,6 +472,125 @@
 /* Team manager */
 .team-manager .panel-header {
   margin-bottom: 20px;
+}
+
+/* Organization manager */
+.org-manager {
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: var(--shadow);
+}
+
+.org-search {
+  margin-bottom: 12px;
+}
+
+.org-search input {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+  color: var(--text-h);
+  font-size: 15px;
+}
+
+.org-search input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--accent-bg);
+}
+
+.org-current {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+  padding: 10px 12px;
+  background: var(--accent-bg);
+  border: 1px solid var(--accent-border);
+  border-radius: 8px;
+}
+
+.org-current-label {
+  font-size: 13px;
+  color: var(--text);
+}
+
+.org-current-name {
+  font-weight: 600;
+  color: var(--text-h);
+}
+
+.org-search-status,
+.org-list-heading {
+  font-size: 13px;
+  color: var(--text);
+  margin: 0 0 8px 0;
+}
+
+.org-join-hint {
+  font-size: 12px;
+  color: var(--text);
+  opacity: 0.85;
+}
+
+.org-create-hint {
+  font-size: 12px;
+  color: var(--text);
+  margin: 6px 0 0 0;
+}
+
+.add-org {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.add-org input {
+  flex: 1;
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+  color: var(--text-h);
+  font-size: 15px;
+}
+
+.org-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.org-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+  cursor: pointer;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.org-card:hover {
+  border-color: var(--accent-border);
+}
+
+.org-card.selected {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--accent-bg);
+}
+
+.org-card-name {
+  font-weight: 500;
+  color: var(--text-h);
 }
 
 .team-search {

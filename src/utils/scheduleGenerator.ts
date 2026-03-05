@@ -9,7 +9,10 @@ export interface GenerateScheduleParams {
   startBookIndex: number
   startChapter: number
   chaptersPerPerson: number
-  days: number
+  /** Days in each set (e.g. 1 = one day per set, 3 = three days per set). */
+  daysPerSet: number
+  /** Number of sets to generate. Total days = daysPerSet * sets. */
+  sets: number
 }
 
 export interface ScheduleEntry {
@@ -36,7 +39,8 @@ function getMembersPerDay(memberCount: number, days: number): number[] {
 }
 
 export function generateSchedule(params: GenerateScheduleParams): ScheduleEntry[] {
-  const { members, startDate: startDateStr, startBookIndex, startChapter, chaptersPerPerson, days } = params
+  const { members, startDate: startDateStr, startBookIndex, startChapter, chaptersPerPerson, daysPerSet, sets } = params
+  const days = daysPerSet * sets
 
   if (members.length === 0) {
     return []
