@@ -44,9 +44,11 @@ export type TranslationKeys = {
   app: {
     title: string
     tagline: string
+    multiUserHint: string
     alertSelectTeam: string
     alertAddMembers: string
     alertError: string
+    alertScheduleConflict: string
     visits: string
   }
   org: {
@@ -123,6 +125,16 @@ export type TranslationKeys = {
     completion: string
     empty: string
   }
+  tutorial: {
+    title: string
+    step1: string
+    step2: string
+    step3: string
+    step4: string
+    step4Settings: string
+    doNotShowAgain: string
+    close: string
+  }
 }
 
 function makeTranslations(t: TranslationKeys): TranslationKeys {
@@ -143,9 +155,11 @@ export const translations: Record<Locale, TranslationKeys> = {
     app: {
       title: '성경 읽기 스케줄러',
       tagline: '팀별 읽기 순서를 만들고 메시지용 텍스트를 복사하세요',
+      multiUserHint: '여러 사람이 동시에 사용할 수 있습니다. 같은 팀을 동시에 수정하면 마지막 저장이 적용됩니다.',
       alertSelectTeam: '스케줄을 생성할 팀을 선택해주세요.',
       alertAddMembers: '해당 팀에 멤버를 먼저 추가해주세요.',
       alertError: '스케줄 생성 중 오류가 발생했습니다.',
+      alertScheduleConflict: '다른 사용자가 이 팀 스케줄을 수정한 것 같습니다. 새로고침 후 다시 시도해 주세요.',
       visits: '방문 수'
     },
     org: {
@@ -221,6 +235,16 @@ export const translations: Record<Locale, TranslationKeys> = {
       title: '팀 대시보드',
       completion: '통독',
       empty: '팀이 없습니다.'
+    },
+    tutorial: {
+      title: '간단 사용법',
+      step1: '1. 교회/단체 검색 — 검색 후 선택하거나 새로 만드세요.',
+      step2: '2. 팀 검색 또는 생성 — 팀을 선택하거나 새 팀을 추가하세요.',
+      step3: '3. 팀원 입력 — 팀원 이름을 추가한 뒤 순서를 정하세요.',
+      step4: '4. 설정 의미',
+      step4Settings: '시작일·책/장, 인당 장 수, 세트당 일수, 세트 수를 정하면 전체 일정이 정해집니다. 생성 후 복사해 사용하세요.',
+      doNotShowAgain: '다시 보지 않기',
+      close: '닫기'
     }
   }),
   en: makeTranslations({
@@ -236,9 +260,11 @@ export const translations: Record<Locale, TranslationKeys> = {
     app: {
       title: 'Bible Reading Scheduler',
       tagline: 'Create team reading order and copy message-ready text.',
+      multiUserHint: 'Multiple people can use this at once. Editing the same team at the same time uses the last save.',
       alertSelectTeam: 'Please select a team to generate the schedule.',
       alertAddMembers: 'Please add members to the team first.',
       alertError: 'An error occurred while generating the schedule.',
+      alertScheduleConflict: 'Someone else may have updated this team\'s schedule. Please refresh and try again.',
       visits: 'Visits'
     },
     org: {
@@ -314,6 +340,16 @@ export const translations: Record<Locale, TranslationKeys> = {
       title: 'Team Dashboard',
       completion: 'Completion',
       empty: 'No teams yet.'
+    },
+    tutorial: {
+      title: 'Quick guide',
+      step1: '1. Search org — Search and select your church/org or create new.',
+      step2: '2. Search or create team — Select a team or add a new one.',
+      step3: '3. Enter members — Add member names and reorder as needed.',
+      step4: '4. What each setting means',
+      step4Settings: 'Start date, book/chapter, chapters per person, days per set, and number of sets define the schedule. Generate then copy to use.',
+      doNotShowAgain: 'Do not show again',
+      close: 'Close'
     }
   }),
   he: makeTranslations({
@@ -329,9 +365,11 @@ export const translations: Record<Locale, TranslationKeys> = {
     app: {
       title: 'לוח קריאת התנ"ך',
       tagline: 'צור סדר קריאה לצוות והעתק טקסט מוכן להודעה.',
+      multiUserHint: 'משתמשים רבים יכולים להשתמש במקביל. עריכת אותו צוות במקביל תשתמש בשמירה האחרונה.',
       alertSelectTeam: 'נא לבחור צוות ליצירת הלוח.',
       alertAddMembers: 'נא להוסיף חברים לצוות תחילה.',
       alertError: 'אירעה שגיאה ביצירת הלוח.',
+      alertScheduleConflict: 'ייתכן שמישהו אחר עדכן את לוח הצוות. נא לרענן ולנסות שוב.',
       visits: 'ביקורים'
     },
     org: {
@@ -407,6 +445,16 @@ export const translations: Record<Locale, TranslationKeys> = {
       title: 'לוח צוות',
       completion: 'השלמה',
       empty: 'אין עדיין צוותים.'
+    },
+    tutorial: {
+      title: 'מדריך קצר',
+      step1: '1. חיפוש ארגון — חפש ובחר כנסייה/ארגון או צור חדש.',
+      step2: '2. חיפוש או יצירת צוות — בחר צוות או הוסף חדש.',
+      step3: '3. הזנת חברים — הוסף שמות וסדר.',
+      step4: '4. משמעות ההגדרות',
+      step4Settings: 'תאריך התחלה, ספר/פרק, פרקים לאדם, ימים לסט ומספר סטים מגדירים את לוח הזמנים. צור והעתק.',
+      doNotShowAgain: 'לא להציג שוב',
+      close: 'סגור'
     }
   }),
   es: makeTranslations({
@@ -422,9 +470,11 @@ export const translations: Record<Locale, TranslationKeys> = {
     app: {
       title: 'Calendario de lectura bíblica',
       tagline: 'Crea el orden de lectura por equipo y copia el texto para mensajes.',
+      multiUserHint: 'Varias personas pueden usarlo a la vez. Si editan el mismo equipo, se guarda el último.',
       alertSelectTeam: 'Selecciona un equipo para generar el calendario.',
       alertAddMembers: 'Añade miembros al equipo primero.',
       alertError: 'Error al generar el calendario.',
+      alertScheduleConflict: 'Parece que alguien más actualizó este calendario. Actualiza la página e inténtalo de nuevo.',
       visits: 'Visitas'
     },
     org: {
@@ -500,6 +550,16 @@ export const translations: Record<Locale, TranslationKeys> = {
       title: 'Panel de equipos',
       completion: 'Completado',
       empty: 'Aún no hay equipos.'
+    },
+    tutorial: {
+      title: 'Guía rápida',
+      step1: '1. Buscar organización — Busca y elige iglesia/org o crea una nueva.',
+      step2: '2. Buscar o crear equipo — Elige un equipo o añade uno nuevo.',
+      step3: '3. Añadir miembros — Añade nombres y ordena.',
+      step4: '4. Qué significa cada opción',
+      step4Settings: 'Fecha inicio, libro/capítulo, capítulos por persona, días por set y número de sets definen el calendario. Genera y copia.',
+      doNotShowAgain: 'No mostrar de nuevo',
+      close: 'Cerrar'
     }
   }),
   ja: makeTranslations({
@@ -515,9 +575,11 @@ export const translations: Record<Locale, TranslationKeys> = {
     app: {
       title: '聖書読みスケジュール',
       tagline: 'チームの読み順を作成し、メッセージ用テキストをコピーできます。',
+      multiUserHint: '複数人が同時に利用できます。同じチームを同時に編集すると、最後に保存した内容が反映されます。',
       alertSelectTeam: 'スケジュールを生成するチームを選択してください。',
       alertAddMembers: 'まずチームにメンバーを追加してください。',
       alertError: 'スケジュールの生成中にエラーが発生しました。',
+      alertScheduleConflict: '他の方がこのチームのスケジュールを更新した可能性があります。更新してから再度お試しください。',
       visits: '訪問数'
     },
     org: {
@@ -593,6 +655,16 @@ export const translations: Record<Locale, TranslationKeys> = {
       title: 'チームダッシュボード',
       completion: '通読',
       empty: 'チームがありません。'
+    },
+    tutorial: {
+      title: '簡単ガイド',
+      step1: '1. 教会・団体を検索 — 検索して選択するか新規作成。',
+      step2: '2. チームを検索または作成 — チームを選ぶか新規追加。',
+      step3: '3. メンバーを入力 — 名前を追加して並べ替え。',
+      step4: '4. 各設定の意味',
+      step4Settings: '開始日・書・章、1人あたりの章数、1セットの日数、セット数でスケジュールが決まります。生成してコピー。',
+      doNotShowAgain: '今後表示しない',
+      close: '閉じる'
     }
   }),
   fa: makeTranslations({
@@ -608,9 +680,11 @@ export const translations: Record<Locale, TranslationKeys> = {
     app: {
       title: 'برنامه مطالعه کتاب مقدس',
       tagline: 'ترتیب مطالعه تیم را بسازید و متن را کپی کنید.',
+      multiUserHint: 'چند نفر می\u200cتوانند هم\u200cزمان استفاده کنند. ویرایش همان تیم هم\u200cزمان، آخرین ذخیره اعمال می\u200cشود.',
       alertSelectTeam: 'یک تیم برای ساخت برنامه انتخاب کنید.',
       alertAddMembers: 'ابتدا اعضای تیم را اضافه کنید.',
       alertError: 'خطا در ساخت برنامه.',
+      alertScheduleConflict: 'احتمالاً شخص دیگری برنامه این تیم را به\u200cروز کرده. لطفاً صفحه را 새 کنید و دوباره تلاش کنید.',
       visits: 'بازدیدها'
     },
     org: {
@@ -686,6 +760,16 @@ export const translations: Record<Locale, TranslationKeys> = {
       title: 'داشبورد تیم',
       completion: 'تکمیل',
       empty: 'هنوز تیمی نیست.'
+    },
+    tutorial: {
+      title: 'راهنمای کوتاه',
+      step1: '۱. جستجوی سازمان — جستجو و انتخاب کلیسا/سازمان یا ایجاد جدید.',
+      step2: '۲. جستجو یا ایجاد تیم — انتخاب تیم یا افزودن تیم جدید.',
+      step3: '۳. وارد کردن اعضا — افزودن نام و ترتیب.',
+      step4: '۴. معنای هر تنظیم',
+      step4Settings: 'تاریخ شروع، کتاب/فصل، فصل به ازای هر نفر، روز هر ست و تعداد ست‌ها برنامه را مشخص می‌کنند. تولید و کپی.',
+      doNotShowAgain: 'دیگر نشان نده',
+      close: 'بستن'
     }
   }),
   zh: makeTranslations({
@@ -701,9 +785,11 @@ export const translations: Record<Locale, TranslationKeys> = {
     app: {
       title: '圣经阅读日程',
       tagline: '创建团队阅读顺序，复制可用于消息的文本。',
+      multiUserHint: '可多人同时使用。同时编辑同一团队时，以最后保存为准。',
       alertSelectTeam: '请选择要生成日程的团队。',
       alertAddMembers: '请先为该团队添加成员。',
       alertError: '生成日程时出错。',
+      alertScheduleConflict: '可能有人已更新该团队的日程，请刷新后重试。',
       visits: '访问量'
     },
     org: {
@@ -779,6 +865,16 @@ export const translations: Record<Locale, TranslationKeys> = {
       title: '团队仪表板',
       completion: '通读',
       empty: '暂无团队。'
+    },
+    tutorial: {
+      title: '简要指南',
+      step1: '1. 搜索教会/机构 — 搜索并选择或新建。',
+      step2: '2. 搜索或创建团队 — 选择团队或新建。',
+      step3: '3. 添加成员 — 输入成员名称并排序。',
+      step4: '4. 各设置含义',
+      step4Settings: '开始日期、书/章、每人章数、每套天数和套数决定日程。生成后复制使用。',
+      doNotShowAgain: '不再显示',
+      close: '关闭'
     }
   })
 }

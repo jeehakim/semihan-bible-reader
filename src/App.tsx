@@ -8,6 +8,7 @@ import { TeamDashboard } from './components/TeamDashboard'
 import { ScheduleConfig } from './components/ScheduleConfig'
 import { ScheduleDisplay } from './components/ScheduleDisplay'
 import { AdSenseUnit } from './components/AdSenseUnit'
+import { TutorialPopup } from './components/TutorialPopup'
 import { bibleBooks } from './data/bibleBooks'
 import { generateSchedule } from './utils/scheduleGenerator'
 import { normalizeDateKey } from './utils/dateUtils'
@@ -18,6 +19,7 @@ const lastBibleBook = bibleBooks[bibleBooks.length - 1]
 
 const STORAGE_ORG_KEY = 'shofar-selected-org-id'
 const STORAGE_TEAM_KEY = 'shofar-selected-team-id'
+const DEFAULT_ORG_NAME = '세미한교회'
 const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
 
 function getStoredId(key: string): string | null {
@@ -34,8 +36,35 @@ function App() {
   const [selectedTeamId, setSelectedTeamId] = useState<string | null>(() => getStoredId(STORAGE_TEAM_KEY))
   const [members, setMembers] = useState<Member[]>([])
   const [scheduleGroups, setScheduleGroups] = useState<ScheduleGroup[]>([])
+  const [scheduleEntryCount, setScheduleEntryCount] = useState(0)
   const [isGenerating, setIsGenerating] = useState(false)
   const [visitCount, setVisitCount] = useState<number | null>(null)
+
+  // Prepopulate default org (세미한교회) when none selected
+  useEffect(() => {
+    if (selectedOrgId) return
+    let cancelled = false
+    api.getOrganizations().then((list) => {
+      if (cancelled) return
+      const org = list.find((o) => o.name.trim() === DEFAULT_ORG_NAME)
+      if (org) {
+        setSelectedOrgId(org.id)
+      } else {
+        api.createOrganization(DEFAULT_ORG_NAME)
+          .then((created) => {
+            if (!cancelled) setSelectedOrgId(created.id)
+          })
+          .catch(async (e: unknown) => {
+            if ((e as { status?: number }).status === 409) {
+              const list2 = await api.getOrganizations().catch(() => [])
+              const o = list2.find((x) => x.name.trim() === DEFAULT_ORG_NAME)
+              if (!cancelled && o) setSelectedOrgId(o.id)
+            }
+          })
+      }
+    }).catch(() => {})
+    return () => { cancelled = true }
+  }, [])
 
   useEffect(() => {
     if (!selectedOrgId) {
@@ -69,7 +98,16 @@ function App() {
   }, [selectedTeamId])
 
   useEffect(() => {
-    api.recordVisit().then(({ count }) => setVisitCount(count)).catch(() => {})
+    const sessionId =
+      typeof sessionStorage !== 'undefined'
+        ? sessionStorage.getItem('shofar-visit-session-id') ||
+          (() => {
+            const id = crypto.randomUUID?.() ?? `s${Date.now()}-${Math.random().toString(36).slice(2)}`
+            sessionStorage.setItem('shofar-visit-session-id', id)
+            return id
+          })()
+        : ''
+    if (sessionId) api.recordVisit(sessionId).then(({ count }) => setVisitCount(count)).catch(() => {})
   }, [])
 
   useEffect(() => {
@@ -79,6 +117,7 @@ function App() {
     } else {
       setMembers([])
       setScheduleGroups([])
+      setScheduleEntryCount(0)
     }
   }, [selectedTeamId])
 
@@ -119,6 +158,7 @@ function App() {
       const data = await api.getSchedules(teamId)
       const grouped = groupSchedulesByDate(data)
       setScheduleGroups(grouped)
+      setScheduleEntryCount(data.length)
     } catch (e) {
       console.error(e)
     }
@@ -171,16 +211,22 @@ function App() {
         lastEntry?.book_name === lastBibleBook.korean &&
         lastEntry?.chapter === lastBibleBook.chapters
       )
-      const saved = await api.saveSchedules(selectedTeamId, schedule, completedReadThrough)
-      // Update UI from save response so we always show the new schedule (avoids cache)
+      const saved = await api.saveSchedules(selectedTeamId, schedule, completedReadThrough, scheduleEntryCount)
       const grouped = groupSchedulesByDate(saved ?? [])
       setScheduleGroups(grouped)
+      setScheduleEntryCount(saved?.length ?? 0)
       if (completedReadThrough && selectedOrgId) {
         loadTeams(selectedOrgId)
       }
-    } catch (e) {
+    } catch (e: unknown) {
       console.error(e)
-      alert(t('app.alertError'))
+      const err = e as { message?: string; status?: number }
+      if (err.status === 409) {
+        alert(t('app.alertScheduleConflict'))
+        if (selectedTeamId) loadSchedules(selectedTeamId)
+      } else {
+        alert(err?.message || t('app.alertError'))
+      }
     } finally {
       setIsGenerating(false)
     }
@@ -192,10 +238,12 @@ function App() {
 
   return (
     <div className="app">
+      <TutorialPopup />
       <TopNav />
       <header className="app-header">
         <h1>{t('app.title')}</h1>
         <p className="app-tagline">{t('app.tagline')}</p>
+        <p className="app-multi-user-hint">{t('app.multiUserHint')}</p>
       </header>
 
       <div className="app-content">

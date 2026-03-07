@@ -82,12 +82,15 @@ export async function initSchema() {
   await q(`CREATE INDEX IF NOT EXISTS idx_schedules_team ON schedules(team_id)`)
   await q(`CREATE INDEX IF NOT EXISTS idx_schedules_date ON schedules(team_id, date)`)
   await q(`
-    CREATE TABLE IF NOT EXISTS visit_count (
-      id INTEGER PRIMARY KEY CHECK (id = 1),
-      n INTEGER NOT NULL DEFAULT 0
+    CREATE TABLE IF NOT EXISTS visitor_sessions (
+      id UUID PRIMARY KEY,
+      ip TEXT NOT NULL,
+      session_id TEXT NOT NULL,
+      created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+      UNIQUE(ip, session_id)
     )
   `)
-  await q(`INSERT INTO visit_count (id, n) VALUES (1, 0) ON CONFLICT (id) DO NOTHING`)
+  await q(`CREATE INDEX IF NOT EXISTS idx_visitor_sessions_created ON visitor_sessions(created_at)`)
 
   const defaultOrgId = '00000000-0000-4000-8000-000000000001'
   const orgCheck = await q('SELECT 1 FROM organizations WHERE id = $1', [defaultOrgId])

@@ -294,6 +294,76 @@
   color: var(--text);
 }
 
+/* Tutorial popup */
+.tutorial-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+.tutorial-popup {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  max-width: 420px;
+  width: 100%;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+.tutorial-title {
+  margin: 0 0 16px;
+  font-size: 18px;
+  color: var(--text-h);
+}
+.tutorial-steps {
+  margin: 0 0 20px;
+  padding-left: 20px;
+  color: var(--text);
+  font-size: 14px;
+  line-height: 1.5;
+}
+.tutorial-steps li {
+  margin-bottom: 8px;
+}
+.tutorial-step4-detail {
+  margin: 6px 0 0;
+  padding-left: 0;
+  font-size: 13px;
+  color: var(--text-muted, #666);
+}
+.tutorial-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+  font-size: 13px;
+  color: var(--text);
+  cursor: pointer;
+}
+.tutorial-checkbox input {
+  width: 16px;
+  height: 16px;
+}
+.tutorial-close {
+  display: block;
+  width: 100%;
+  padding: 10px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--bg);
+  background: var(--accent);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.tutorial-close:hover {
+  filter: brightness(1.1);
+}
+
 /* Mobile: touch-friendly targets (min 44px), larger tap areas */
 @media (max-width: 600px) {
   .app {

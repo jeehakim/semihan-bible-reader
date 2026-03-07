@@ -7,7 +7,11 @@ async function request<T>(path: string, options?: RequestInit): Promise<T> {
   })
   if (res.status === 204) return undefined as T
   const data = await res.json().catch(() => ({}))
-  if (!res.ok) throw new Error(data.error || res.statusText)
+  if (!res.ok) {
+    const err = new Error(data.error || res.statusText) as Error & { status?: number }
+    err.status = res.status
+    throw err
+  }
   return data as T
 }
 
@@ -66,18 +70,23 @@ export const api = {
   saveSchedules: (
     teamId: string,
     entries: { member_id: string; memberName: string; date: string; book_name: string; chapter: number }[],
-    completedReadThrough?: boolean
+    completedReadThrough?: boolean,
+    expectedScheduleCount?: number
   ) =>
     request<{ id: string; team_id: string; member_id: string; member_name: string; date: string; book_name: string; chapter: number }[]>(
       `/schedules`,
       {
         method: 'POST',
-        body: JSON.stringify({ teamId, entries, completedReadThrough }),
+        body: JSON.stringify({ teamId, entries, completedReadThrough, expectedScheduleCount }),
         cache: 'no-store'
       }
     ),
 
-  /** Record a visit and return the total visit count. */
-  recordVisit: () =>
-    request<{ count: number }>('/visit', { cache: 'no-store' })
+  /** Record a visit (by IP + session) and return the total visitor count. */
+  recordVisit: (sessionId: string) =>
+    request<{ count: number }>('/visit', {
+      method: 'POST',
+      body: JSON.stringify({ sessionId }),
+      cache: 'no-store'
+    })
 }

@@ -376,7 +376,7 @@ function safeScheduleEntry(e) {
 app.post('/api/schedules', async (req, res) => {
   res.set('Cache-Control', 'no-store, no-cache, must-revalidate')
   try {
-    const { teamId, entries, completedReadThrough } = req.body || {}
+    const { teamId, entries, completedReadThrough, expectedScheduleCount } = req.body || {}
     if (!teamId || !Array.isArray(entries)) {
       return res.status(400).json({ error: 'teamId and entries array are required' })
     }
@@ -388,6 +388,13 @@ app.post('/api/schedules', async (req, res) => {
     const validEntries = entries.map(safeScheduleEntry).filter(Boolean)
     if (validEntries.length !== entries.length) {
       return res.status(400).json({ error: 'Invalid schedule entry format' })
+    }
+    if (typeof expectedScheduleCount === 'number' && Number.isInteger(expectedScheduleCount) && expectedScheduleCount >= 0) {
+      const countResult = await query('SELECT COUNT(*) AS c FROM schedules WHERE team_id = $1', [tid])
+      const currentCount = Number(countResult.rows[0]?.c ?? 0)
+      if (currentCount !== expectedScheduleCount) {
+        return res.status(409).json({ error: 'Schedule was updated by someone else. Please refresh and try again.' })
+      }
     }
     await query('DELETE FROM schedules WHERE team_id = $1', [tid])
     for (const e of validEntries) {
@@ -420,13 +427,24 @@ app.get('/api/health', async (req, res) => {
   res.json({ ok: true, database: 'connected' })
 })
 
-// Visit counter: increment and return total (one call per page load from client)
-app.get('/api/visit', async (req, res) => {
+// Visitor counter: one per IP + browser session (POST with sessionId)
+app.post('/api/visit', async (req, res) => {
   try {
-    await query('UPDATE visit_count SET n = n + 1 WHERE id = 1')
-    const result = await query('SELECT n AS count FROM visit_count WHERE id = 1')
-    const row = result.rows[0]
-    res.json({ count: row ? Number(row.count) : 0 })
+    const sessionId = typeof req.body?.sessionId === 'string' ? req.body.sessionId.trim() : ''
+    if (!sessionId) {
+      return res.status(400).json({ error: 'sessionId required' })
+    }
+    const forwarded = req.headers['x-forwarded-for']
+    const ip = typeof forwarded === 'string' ? forwarded.split(',')[0].trim() : (req.socket?.remoteAddress || req.ip || '')
+    const id = randomUUID()
+    await query(
+      `INSERT INTO visitor_sessions (id, ip, session_id) VALUES ($1, $2, $3)
+       ON CONFLICT (ip, session_id) DO NOTHING`,
+      [id, ip || 'unknown', sessionId]
+    )
+    const result = await query('SELECT COUNT(*) AS count FROM visitor_sessions')
+    const count = Number(result.rows[0]?.count ?? 0)
+    res.json({ count })
   } catch (err) {
     console.error(err)
     res.status(500).json({ error: isProd ? 'Server error' : err.message })
