@@ -127,11 +127,20 @@ export type TranslationKeys = {
   }
   tutorial: {
     title: string
-    step1: string
-    step2: string
-    step3: string
-    step4: string
-    step4Settings: string
+    step1Title: string
+    step1Body: string
+    step2Title: string
+    step2Body: string
+    step3Title: string
+    fieldStartDate: string
+    fieldStartBook: string
+    fieldStartChapter: string
+    fieldChaptersPerPerson: string
+    fieldDaysPerSet: string
+    fieldSets: string
+    next: string
+    back: string
+    finish: string
     doNotShowAgain: string
     close: string
   }
@@ -238,11 +247,20 @@ export const translations: Record<Locale, TranslationKeys> = {
     },
     tutorial: {
       title: '간단 사용법',
-      step1: '1. 교회/단체 검색 — 검색 후 선택하거나 새로 만드세요.',
-      step2: '2. 팀 검색 또는 생성 — 팀을 선택하거나 새 팀을 추가하세요.',
-      step3: '3. 팀원 입력 — 팀원 이름을 추가한 뒤 순서를 정하세요.',
-      step4: '4. 설정 의미',
-      step4Settings: '시작일·책/장, 인당 장 수, 세트당 일수, 세트 수를 정하면 전체 일정이 정해집니다. 생성 후 복사해 사용하세요.',
+      step1Title: '교회/단체 선택',
+      step1Body: '교회 또는 단체 이름을 검색해 선택하거나, 없으면 새로 만드세요.',
+      step2Title: '팀 관리',
+      step2Body: '팀을 검색해 선택하거나 새 팀을 추가한 뒤, 팀원 이름을 입력하고 순서를 정하세요.',
+      step3Title: '스케줄 설정',
+      fieldStartDate: '시작할 날짜를 선택하세요.',
+      fieldStartBook: '성경의 시작 책을 선택하세요.',
+      fieldStartChapter: '해당 책의 시작 장을 선택하세요.',
+      fieldChaptersPerPerson: '한 사람이 읽을 장 수입니다.',
+      fieldDaysPerSet: '한 세트에 채울 날 수입니다. (예: 20명, 4일이면 하루 5명씩 4일이 한 세트)',
+      fieldSets: '그런 세트를 몇 번 반복할지입니다.',
+      next: '다음',
+      back: '이전',
+      finish: '완료',
       doNotShowAgain: '다시 보지 않기',
       close: '닫기'
     }
@@ -343,11 +361,20 @@ export const translations: Record<Locale, TranslationKeys> = {
     },
     tutorial: {
       title: 'Quick guide',
-      step1: '1. Search org — Search and select your church/org or create new.',
-      step2: '2. Search or create team — Select a team or add a new one.',
-      step3: '3. Enter members — Add member names and reorder as needed.',
-      step4: '4. What each setting means',
-      step4Settings: 'Start date, book/chapter, chapters per person, days per set, and number of sets define the schedule. Generate then copy to use.',
+      step1Title: 'Org search & selection',
+      step1Body: 'Search for your church or organization and select it, or create a new one.',
+      step2Title: 'Team management',
+      step2Body: 'Search or create a team, then add member names and reorder as needed.',
+      step3Title: 'Schedule settings',
+      fieldStartDate: 'Select the starting date.',
+      fieldStartBook: 'Starting book of the Bible.',
+      fieldStartChapter: 'Starting chapter of that book.',
+      fieldChaptersPerPerson: 'Number of chapters each person reads.',
+      fieldDaysPerSet: 'How many days to fill per set (e.g. 20 members, 4 days → 5 members per day for 4 days in a set).',
+      fieldSets: 'How many sets of those days to generate.',
+      next: 'Next',
+      back: 'Back',
+      finish: 'Finish',
       doNotShowAgain: 'Do not show again',
       close: 'Close'
     }
@@ -448,11 +475,20 @@ export const translations: Record<Locale, TranslationKeys> = {
     },
     tutorial: {
       title: 'מדריך קצר',
-      step1: '1. חיפוש ארגון — חפש ובחר כנסייה/ארגון או צור חדש.',
-      step2: '2. חיפוש או יצירת צוות — בחר צוות או הוסף חדש.',
-      step3: '3. הזנת חברים — הוסף שמות וסדר.',
-      step4: '4. משמעות ההגדרות',
-      step4Settings: 'תאריך התחלה, ספר/פרק, פרקים לאדם, ימים לסט ומספר סטים מגדירים את לוח הזמנים. צור והעתק.',
+      step1Title: 'בחירת ארגון',
+      step1Body: 'חפש כנסייה או ארגון ובחר, או צור חדש.',
+      step2Title: 'ניהול צוות',
+      step2Body: 'חפש או צור צוות, הוסף שמות חברים וסדר.',
+      step3Title: 'הגדרות לוח זמנים',
+      fieldStartDate: 'בחר את תאריך ההתחלה.',
+      fieldStartBook: 'ספר התנ"ך להתחלה.',
+      fieldStartChapter: 'פרק ההתחלה באותו ספר.',
+      fieldChaptersPerPerson: 'כמות הפרקים שאדם קורא.',
+      fieldDaysPerSet: 'כמה ימים למלא בסט (למשל 20 חברים, 4 ימים → 5 ליום ב-4 ימים).',
+      fieldSets: 'כמה סטים של ימים ליצור.',
+      next: 'הבא',
+      back: 'הקודם',
+      finish: 'סיום',
       doNotShowAgain: 'לא להציג שוב',
       close: 'סגור'
     }
@@ -553,11 +589,20 @@ export const translations: Record<Locale, TranslationKeys> = {
     },
     tutorial: {
       title: 'Guía rápida',
-      step1: '1. Buscar organización — Busca y elige iglesia/org o crea una nueva.',
-      step2: '2. Buscar o crear equipo — Elige un equipo o añade uno nuevo.',
-      step3: '3. Añadir miembros — Añade nombres y ordena.',
-      step4: '4. Qué significa cada opción',
-      step4Settings: 'Fecha inicio, libro/capítulo, capítulos por persona, días por set y número de sets definen el calendario. Genera y copia.',
+      step1Title: 'Buscar y elegir organización',
+      step1Body: 'Busca tu iglesia u organización y selecciónala, o crea una nueva.',
+      step2Title: 'Gestión de equipos',
+      step2Body: 'Busca o crea un equipo, añade nombres de miembros y ordena.',
+      step3Title: 'Configuración del calendario',
+      fieldStartDate: 'Selecciona la fecha de inicio.',
+      fieldStartBook: 'Libro de la Biblia por el que empezar.',
+      fieldStartChapter: 'Capítulo inicial de ese libro.',
+      fieldChaptersPerPerson: 'Número de capítulos que lee cada persona.',
+      fieldDaysPerSet: 'Cuántos días rellenar por set (ej. 20 miembros, 4 días → 5 por día durante 4 días en un set).',
+      fieldSets: 'Cuántos sets de días generar.',
+      next: 'Siguiente',
+      back: 'Atrás',
+      finish: 'Terminar',
       doNotShowAgain: 'No mostrar de nuevo',
       close: 'Cerrar'
     }
@@ -658,11 +703,20 @@ export const translations: Record<Locale, TranslationKeys> = {
     },
     tutorial: {
       title: '簡単ガイド',
-      step1: '1. 教会・団体を検索 — 検索して選択するか新規作成。',
-      step2: '2. チームを検索または作成 — チームを選ぶか新規追加。',
-      step3: '3. メンバーを入力 — 名前を追加して並べ替え。',
-      step4: '4. 各設定の意味',
-      step4Settings: '開始日・書・章、1人あたりの章数、1セットの日数、セット数でスケジュールが決まります。生成してコピー。',
+      step1Title: '教会・団体の検索・選択',
+      step1Body: '教会または団体を検索して選択するか、新規作成します。',
+      step2Title: 'チーム管理',
+      step2Body: 'チームを検索または作成し、メンバー名を追加して並べ替えます。',
+      step3Title: 'スケジュール設定',
+      fieldStartDate: '開始日を選択します。',
+      fieldStartBook: '開始する聖書の書を選びます。',
+      fieldStartChapter: 'その書の開始章を選びます。',
+      fieldChaptersPerPerson: '1人が読む章の数です。',
+      fieldDaysPerSet: '1セットで何日分埋めるか（例：20人・4日→1日5人×4日が1セット）。',
+      fieldSets: 'そのセットを何回分つくるか。',
+      next: '次へ',
+      back: '戻る',
+      finish: '完了',
       doNotShowAgain: '今後表示しない',
       close: '閉じる'
     }
@@ -763,11 +817,20 @@ export const translations: Record<Locale, TranslationKeys> = {
     },
     tutorial: {
       title: 'راهنمای کوتاه',
-      step1: '۱. جستجوی سازمان — جستجو و انتخاب کلیسا/سازمان یا ایجاد جدید.',
-      step2: '۲. جستجو یا ایجاد تیم — انتخاب تیم یا افزودن تیم جدید.',
-      step3: '۳. وارد کردن اعضا — افزودن نام و ترتیب.',
-      step4: '۴. معنای هر تنظیم',
-      step4Settings: 'تاریخ شروع، کتاب/فصل، فصل به ازای هر نفر، روز هر ست و تعداد ست‌ها برنامه را مشخص می‌کنند. تولید و کپی.',
+      step1Title: 'جستجو و انتخاب سازمان',
+      step1Body: 'کلیسا یا سازمان را جستجو و انتخاب کنید یا جدید بسازید.',
+      step2Title: 'مدیریت تیم',
+      step2Body: 'تیم را جستجو یا بسازید، نام اعضا را اضافه و مرتب کنید.',
+      step3Title: 'تنظیمات برنامه',
+      fieldStartDate: 'تاریخ شروع را انتخاب کنید.',
+      fieldStartBook: 'کتاب شروع کتاب مقدس.',
+      fieldStartChapter: 'فصل شروع آن کتاب.',
+      fieldChaptersPerPerson: 'تعداد فصل‌هایی که هر نفر می‌خواند.',
+      fieldDaysPerSet: 'چند روز در هر ست پر شود (مثلاً ۲۰ نفر، ۴ روز → ۵ نفر در روز برای ۴ روز در یک ست).',
+      fieldSets: 'چند ست از آن روزها ساخته شود.',
+      next: 'بعدی',
+      back: 'قبلی',
+      finish: 'پایان',
       doNotShowAgain: 'دیگر نشان نده',
       close: 'بستن'
     }
@@ -868,11 +931,20 @@ export const translations: Record<Locale, TranslationKeys> = {
     },
     tutorial: {
       title: '简要指南',
-      step1: '1. 搜索教会/机构 — 搜索并选择或新建。',
-      step2: '2. 搜索或创建团队 — 选择团队或新建。',
-      step3: '3. 添加成员 — 输入成员名称并排序。',
-      step4: '4. 各设置含义',
-      step4Settings: '开始日期、书/章、每人章数、每套天数和套数决定日程。生成后复制使用。',
+      step1Title: '教会/机构搜索与选择',
+      step1Body: '搜索教会或机构并选择，或新建。',
+      step2Title: '团队管理',
+      step2Body: '搜索或创建团队，添加成员名称并排序。',
+      step3Title: '日程设置',
+      fieldStartDate: '选择开始日期。',
+      fieldStartBook: '开始的圣经书卷。',
+      fieldStartChapter: '该书卷的起始章。',
+      fieldChaptersPerPerson: '每人阅读的章数。',
+      fieldDaysPerSet: '每套填充几天（如 20 人、4 天 → 每天 5 人，共 4 天为一套）。',
+      fieldSets: '生成多少套这样的天数。',
+      next: '下一步',
+      back: '上一步',
+      finish: '完成',
       doNotShowAgain: '不再显示',
       close: '关闭'
     }

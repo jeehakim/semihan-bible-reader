@@ -8,7 +8,7 @@ import { TeamDashboard } from './components/TeamDashboard'
 import { ScheduleConfig } from './components/ScheduleConfig'
 import { ScheduleDisplay } from './components/ScheduleDisplay'
 import { AdSenseUnit } from './components/AdSenseUnit'
-import { TutorialPopup } from './components/TutorialPopup'
+import { TutorialTour } from './components/TutorialTour'
 import { bibleBooks } from './data/bibleBooks'
 import { generateSchedule } from './utils/scheduleGenerator'
 import { normalizeDateKey } from './utils/dateUtils'
@@ -238,7 +238,7 @@ function App() {
 
   return (
     <div className="app">
-      <TutorialPopup />
+      <TutorialTour />
       <TopNav />
       <header className="app-header">
         <h1>{t('app.title')}</h1>
@@ -248,27 +248,33 @@ function App() {
 
       <div className="app-content">
         <aside className="left-panel">
-          <OrgManager
-            selectedOrgId={selectedOrgId}
-            onSelectOrg={setSelectedOrgId}
-            onOrgsUpdate={handleOrgsUpdate}
-          />
-          <TeamManager
-            selectedOrgId={selectedOrgId}
-            onTeamsUpdate={() => selectedOrgId && loadTeams(selectedOrgId)}
-            selectedTeamId={selectedTeamId}
-            onSelectTeam={setSelectedTeamId}
-          />
+          <div className="tutorial-target-org" data-tutorial="org">
+            <OrgManager
+              selectedOrgId={selectedOrgId}
+              onSelectOrg={setSelectedOrgId}
+              onOrgsUpdate={handleOrgsUpdate}
+            />
+          </div>
+          <div className="tutorial-target-team" data-tutorial="team">
+            <TeamManager
+              selectedOrgId={selectedOrgId}
+              onTeamsUpdate={() => selectedOrgId && loadTeams(selectedOrgId)}
+              selectedTeamId={selectedTeamId}
+              onSelectTeam={setSelectedTeamId}
+            />
+          </div>
         </aside>
 
         <main className="right-panel">
+          <div className="tutorial-target-schedule" data-tutorial="schedule">
           <ScheduleConfig
-            onGenerate={handleGenerate}
-            onGenerateDisabled={(msg) => alert(msg)}
-            isGenerating={isGenerating}
-            selectedTeamId={selectedTeamId}
-            memberCount={members.length}
-          />
+              onGenerate={handleGenerate}
+              onGenerateDisabled={(msg) => alert(msg)}
+              isGenerating={isGenerating}
+              selectedTeamId={selectedTeamId}
+              memberCount={members.length}
+            />
+          </div>
           <ScheduleDisplay
             scheduleGroups={scheduleGroups}
             onCopy={handleCopy}
