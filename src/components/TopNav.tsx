@@ -6,6 +6,7 @@ const NAV_LINKS = [
   { label: 'ShofarGPT', href: 'https://shofar.ai' },
   { label: 'Persecution Watch', href: 'https://watch.shofar.ai' },
   { label: 'ChMS/CRM', href: 'https://chms.shofar.ai' },
+  { label: 'Shofar Voice', href: 'https://voice.shofar.ai' },
   { label: 'Social Media', href: 'https://media.shofar.ai', disabled: true }
 ]
 
