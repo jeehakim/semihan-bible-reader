@@ -23,7 +23,7 @@ function formatDateSafe(
 export function ScheduleDisplay({ scheduleGroups, onCopy, orgName, teamName }: ScheduleDisplayProps) {
   const { t, formatDate } = useI18n()
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null)
-  const [hascopiedAll, setHasCopiedAll] = useState(false)
+  const [hasCopiedAll, setHasCopiedAll] = useState(false)
   const chapterLabel = t('scheduleDisplay.chapter')
   const scheduleTitle =
     orgName != null && orgName !== '' && teamName != null && teamName !== ''
