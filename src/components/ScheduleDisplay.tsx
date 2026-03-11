@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useI18n } from '../i18n/context'
 import { parseLocalDateString } from '../utils/dateUtils'
 import type { ScheduleGroup } from '../types'
+import { KakaoShareButton } from './KakaoShareButton'
 
 interface ScheduleDisplayProps {
   scheduleGroups: ScheduleGroup[]
@@ -22,6 +23,7 @@ function formatDateSafe(
 export function ScheduleDisplay({ scheduleGroups, onCopy, orgName, teamName }: ScheduleDisplayProps) {
   const { t, formatDate } = useI18n()
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null)
+  const [hascopiedAll, setHasCopiedAll] = useState(false)
   const chapterLabel = t('scheduleDisplay.chapter')
   const scheduleTitle =
     orgName != null && orgName !== '' && teamName != null && teamName !== ''
@@ -61,6 +63,7 @@ export function ScheduleDisplay({ scheduleGroups, onCopy, orgName, teamName }: S
     const allText = scheduleTitle ? `${scheduleTitle}\n\n${body}` : body
     onCopy(allText)
     setCopiedIndex(-1)
+    setHasCopiedAll(true)
     setTimeout(() => setCopiedIndex(null), 2000)
   }
 
@@ -68,9 +71,16 @@ export function ScheduleDisplay({ scheduleGroups, onCopy, orgName, teamName }: S
     <div className="schedule-display">
       <div className="schedule-header">
         <h2>{scheduleTitle}</h2>
-        <button onClick={handleCopyAll} className="btn-copy-all">
-          {copiedIndex === -1 ? t('scheduleDisplay.copied') : t('scheduleDisplay.copyAll')}
-        </button>
+        <div className="schedule-actions">
+          <button onClick={handleCopyAll} className="btn-copy-all">
+            {copiedIndex === -1 ? t('scheduleDisplay.copied') : t('scheduleDisplay.copyAll')}
+          </button>
+          <KakaoShareButton
+            title={scheduleTitle}
+            description={`${scheduleGroups.length}일간의 성경 읽기 스케줄`}
+            disabled={!hasCopiedAll}
+          />
+        </div>
       </div>
 
       <div className="schedule-list">

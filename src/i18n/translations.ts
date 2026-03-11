@@ -144,6 +144,9 @@ export type TranslationKeys = {
     doNotShowAgain: string
     close: string
   }
+  share: {
+    kakao: string
+  }
 }
 
 function makeTranslations(t: TranslationKeys): TranslationKeys {
@@ -263,6 +266,9 @@ export const translations: Record<Locale, TranslationKeys> = {
       finish: '완료',
       doNotShowAgain: '다시 보지 않기',
       close: '닫기'
+    },
+    share: {
+      kakao: '카카오톡 공유'
     }
   }),
   en: makeTranslations({
@@ -377,6 +383,9 @@ export const translations: Record<Locale, TranslationKeys> = {
       finish: 'Finish',
       doNotShowAgain: 'Do not show again',
       close: 'Close'
+    },
+    share: {
+      kakao: 'Share on KakaoTalk'
     }
   }),
   he: makeTranslations({
@@ -491,6 +500,9 @@ export const translations: Record<Locale, TranslationKeys> = {
       finish: 'סיום',
       doNotShowAgain: 'לא להציג שוב',
       close: 'סגור'
+    },
+    share: {
+      kakao: 'שתף ב-KakaoTalk'
     }
   }),
   es: makeTranslations({
@@ -605,6 +617,9 @@ export const translations: Record<Locale, TranslationKeys> = {
       finish: 'Terminar',
       doNotShowAgain: 'No mostrar de nuevo',
       close: 'Cerrar'
+    },
+    share: {
+      kakao: 'Compartir en KakaoTalk'
     }
   }),
   ja: makeTranslations({
@@ -719,6 +734,9 @@ export const translations: Record<Locale, TranslationKeys> = {
       finish: '完了',
       doNotShowAgain: '今後表示しない',
       close: '閉じる'
+    },
+    share: {
+      kakao: 'カカオトークで共有'
     }
   }),
   fa: makeTranslations({
@@ -833,6 +851,9 @@ export const translations: Record<Locale, TranslationKeys> = {
       finish: 'پایان',
       doNotShowAgain: 'دیگر نشان نده',
       close: 'بستن'
+    },
+    share: {
+      kakao: 'اشتراک در KakaoTalk'
     }
   }),
   zh: makeTranslations({
@@ -947,6 +968,9 @@ export const translations: Record<Locale, TranslationKeys> = {
       finish: '完成',
       doNotShowAgain: '不再显示',
       close: '关闭'
+    },
+    share: {
+      kakao: '分享到KakaoTalk'
     }
   })
 }

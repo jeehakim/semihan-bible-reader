@@ -1143,6 +1143,15 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.schedule-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
 }
 
 .btn-copy-all,
@@ -1224,4 +1233,40 @@
 
 .chapter {
   color: var(--text);
+}
+
+/* Kakao Share Button */
+.kakao-share-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background: #fee500;
+  color: #000000;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.kakao-share-button:hover:not(:disabled) {
+  background: #fada0a;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(254, 229, 0, 0.3);
+}
+
+.kakao-share-button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.kakao-share-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.kakao-share-button svg {
+  flex-shrink: 0;
 }
