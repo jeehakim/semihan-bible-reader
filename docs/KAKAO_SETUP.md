@@ -99,14 +99,30 @@ import { KakaoShareButton } from './components/KakaoShareButton'
 
 ## Production Deployment
 
-When deploying to production:
+When deploying to production (Railway):
 
-1. Add `VITE_KAKAO_JS_KEY` to your production environment variables
+1. Add `VITE_KAKAO_JS_KEY` to your Railway environment variables
+   - Go to your Railway project
+   - Navigate to Variables tab
+   - Add: `VITE_KAKAO_JS_KEY` = `your_kakao_javascript_key_here`
+
 2. Ensure your production domain is registered in Kakao Developers
-3. Test the share functionality on the production site
+   - Go to Kakao Developers → Your App → Platform
+   - Add your production domain (e.g., `https://scheduler.shofar.ai`)
+
+3. Deploy/Redeploy your application
+   - The `railway.toml` configuration will pass the environment variable as a build argument
+   - Vite will embed the key into the JavaScript bundle during build
+
+4. Test the share functionality on the production site
+
+**Important:** Railway passes environment variables as build arguments during the Docker build process. The key is embedded into the frontend bundle at build time, not runtime.
+
 
 ## Security Notes
 
 - Never commit your `.env` file to version control
 - The `.env` file is already in `.gitignore`
 - Use different Kakao apps for development and production if needed
+- The Kakao JavaScript Key is embedded in the frontend bundle (it's meant to be public)
+- Sensitive operations should be handled by your backend, not the Kakao JS SDK

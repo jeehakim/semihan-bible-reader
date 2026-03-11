@@ -4,6 +4,8 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci
 COPY . .
+ARG VITE_KAKAO_JS_KEY
+ENV VITE_KAKAO_JS_KEY=$VITE_KAKAO_JS_KEY
 RUN npm run build
 
 # Production stage: single container with API + static files (PostgreSQL via DATABASE_URL)
