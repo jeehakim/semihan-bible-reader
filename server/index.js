@@ -472,6 +472,12 @@ async function start() {
   console.log('Database connected and schema ready')
   app.listen(PORT, '0.0.0.0', () => {
     console.log(`Server running on port ${PORT}`)
+    // Keepalive: ping DB every 5 min to maintain an active pool connection
+    // and surface disconnections in logs before they affect user requests.
+    setInterval(async () => {
+      const ok = await ping()
+      if (!ok) console.error('Database keepalive ping failed')
+    }, 5 * 60 * 1000)
   })
 }
 start().catch((err) => {
