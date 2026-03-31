@@ -12,7 +12,13 @@ export function getPool() {
     pool = new Pool({
       connectionString: config.databaseUrl,
       max: 10,
-      idleTimeoutMillis: 30000,
+      idleTimeoutMillis: 600000,      // 10 min — reduces idle churn (was 30s)
+      connectionTimeoutMillis: 10000, // fail fast if DB unreachable
+    })
+    // Without this handler, idle-connection errors (e.g. network reset by
+    // PostgreSQL/Railway) throw as unhandled exceptions and crash the process.
+    pool.on('error', (err) => {
+      console.error('Idle database client error:', err.message)
     })
   }
   return pool
